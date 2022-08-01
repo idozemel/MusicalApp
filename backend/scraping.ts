@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 import * as puppeteer from "puppeteer";
 import { RequestHandler, Router } from "express";
+import { genreService } from "./modules/genre/genre.service";
 const baseScarpingWebsite = "https://www.shazam.com";
 const baseScarpingUri = `${baseScarpingWebsite}/charts/genre/world`;
 const scrapingRouter = Router();
@@ -9,9 +10,10 @@ export const scrapingSongs: RequestHandler = async (req, res) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   const genres = await scrapingGenreList(page);
-  for (let genre of genres) {
-    await scrapingSongsByGenre(page, genre);
-  }
+  await genreService.addGenres(genres);
+  // for (let genre of genres) {
+  //   await scrapingSongsByGenre(page, genre);
+  // }
   await browser.close();
   res.json(genres);
 };
