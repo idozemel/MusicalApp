@@ -28,8 +28,15 @@ const addUser = ({ email, username, password, isAdmin = false }: IUser) => {
                 .then(() => resolve())
                 .catch((err: MongooseError) => {
                   if (err.name === "ValidationError")
-                    reject("Validation failed!");
-                  else reject("Saving user failed!");
+                    reject({
+                      status: 400,
+                      message: "Validation failed",
+                    });
+                  else
+                    reject({
+                      status: 500,
+                      message: "internal server error - failed saving new user",
+                    });
                 });
             }
           });
@@ -48,7 +55,7 @@ const getUser = (username: string, password: string) => {
         bcrypt.compare(password, user.password, (err, res) => {
           if (err) reject({ status: 411, message: "Failed to to login" });
           if (res) {
-            const token = jwt.sign({ _id: user._id }, "somekey", {
+            const token = jwt.sign({ _id: user._id }, "SomeSecretKey", {
               expiresIn: "1h",
             });
             resolve(token);
@@ -67,7 +74,12 @@ const getUserById = (id: string) => {
         if (!user) reject({ status: 404, message: "No user found" });
         else resolve(user);
       })
-      .catch(() => reject({ status: 500, message: "Failed to find user" }));
+      .catch(() =>
+        reject({
+          status: 500,
+          message: "internal server error - Failed to find user",
+        })
+      );
   });
 };
 
