@@ -7,14 +7,15 @@ const addGenres = async (genres: string[]) => {
   Genre.insertMany<IGenre[]>(
     parsedGenres,
     { ordered: false },
-    function (err, result: any) {
-      console.log(err?.message);
-    }
+    function (error) {}
   );
 };
 
-const getGenre = "fdf"
+const getGenre = async (name: string) => {
+  return await Genre.findOne({ name });
+};
 
 export const genreService = {
   addGenres,
+  getGenre,
 };

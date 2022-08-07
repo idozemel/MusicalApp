@@ -3,8 +3,8 @@ import { ISong } from "../song/song";
 
 export interface IArtist {
   name: string;
-  link: string;
-  songs: ISong[];
+  link?: string;
+  songs?: ISong[];
 }
 
 const artistSchema = new Schema<IArtist>({

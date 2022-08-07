@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { IArtist } from "../artist/artist";
 import { IGenre } from "../genre/genre";
 
 export interface ISong {
@@ -6,6 +7,7 @@ export interface ISong {
   genre: IGenre;
   link: string;
   image?: string;
+  artist: IArtist;
 }
 
 const songSchema = new Schema<ISong>({
@@ -13,6 +15,10 @@ const songSchema = new Schema<ISong>({
     type: String,
     required: true,
     unique: true,
+  },
+  artist:{
+    type: Schema.Types.ObjectId,
+    ref: "Artist",
   },
   genre: {
     type: Schema.Types.ObjectId,
