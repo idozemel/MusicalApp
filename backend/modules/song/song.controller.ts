@@ -1,7 +1,10 @@
 import { RequestHandler } from "express";
+import { songService } from "./song.service";
 
 const getSongs: RequestHandler = async (req, res, next) => {
   try {
+    const songs = await songService.getSongs();
+    res.json(songs);
   } catch (err) {
     res.json(err);
   }
@@ -9,8 +12,7 @@ const getSongs: RequestHandler = async (req, res, next) => {
 
 const saveSong: RequestHandler = async (req, res, next) => {
   try {
-    // const { email, username, password, isAdmin } = req.body;
-    // await songService.saveSong(username, password);
+    songService.addSong(req.body);
     res.json();
   } catch (err) {
     res.json(err);

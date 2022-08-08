@@ -1,14 +1,19 @@
+import { Scraping } from "./scraping";
+
 import * as cheerio from "cheerio";
 import * as puppeteer from "puppeteer";
-import { RequestHandler, Router } from "express";
-import { genreService } from "./modules/genre/genre.service";
-import { songService } from "./modules/song/song.service";
-import { ISong } from "./modules/song/song";
+import { genreService } from "../genre/genre.service";
+import { ISong } from "../song/song";
+import { songService } from "../song/song.service";
 const baseScarpingWebsite = "https://www.shazam.com";
 const baseScarpingUri = `${baseScarpingWebsite}/charts/genre/world`;
-const scrapingRouter = Router();
 
-export const scrapingSongs: RequestHandler = async (req, res) => {
+const isScraped = async () => {
+  const scraping = await Scraping.findOne();
+  return scraping?.isScraped;
+};
+
+export const scrape = async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   const genres = await scrapingGenreList(page);
@@ -17,7 +22,13 @@ export const scrapingSongs: RequestHandler = async (req, res) => {
     await scrapingSongsByGenre(page, genre);
   }
   await browser.close();
-  res.json(genres);
+  await Scraping.findOneAndUpdate(
+    {},
+    { isScraped: true },
+    {
+      upsert: true,
+    }
+  );
 };
 
 const scrapingGenreList = async (page: puppeteer.Page) => {
@@ -83,6 +94,7 @@ const scrapingSongsByGenre = async (page: puppeteer.Page, genre: string) => {
   }
 };
 
-scrapingRouter.get("/", scrapingSongs);
-
-export default scrapingRouter;
+export const scrapingService = {
+  isScraped,
+  scrape,
+};

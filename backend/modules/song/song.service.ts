@@ -7,9 +7,13 @@ const addSongs = async (songs: ISong[]) => {
     for (let song of songs) {
       await addSong(song);
     }
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
+};
+
+const getSongs = async () => {
+  return await Song.find()
+    .populate("artist", "name link")
+    .populate("genre", "name");
 };
 
 const addSong = async (songToAdd: ISong) => {
@@ -46,4 +50,6 @@ const getSongByName = async (name: string) => {
 
 export const songService = {
   addSongs,
+  addSong,
+  getSongs,
 };

@@ -1,6 +1,7 @@
 import router from "./routes";
 import mongoose from "mongoose";
 import { configConstants } from "./config";
+import { scrapingService } from "./modules/scraping/scraping.service";
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -31,6 +32,9 @@ mongoose
 app.use("/api/", router);
 
 const port = process.env.PORT || 3030;
-app.listen(port, () => {
+app.listen(port, async () => {
   console.log("Server is running on port: " + port);
+  if (!(await scrapingService.isScraped())) {
+    await scrapingService.scrape();
+  }
 });
