@@ -9,6 +9,7 @@ const signup: RequestHandler = async (req, res, next) => {
     const token = await userService.getUser(username, password);
     res.json(token);
   } catch (err) {
+    res.status(400);
     res.json(err);
   }
 };
@@ -19,9 +20,20 @@ const login: RequestHandler = async (req, res, next) => {
     const token = await userService.getUser(username, password);
     res.json(token);
   } catch (err) {
+    res.status(400);
     res.json(err);
   }
 };
 
+const getAllUsers: RequestHandler = async (req, res) => {
+  try {
+    const users = await userService.getAllUsers();
+    res.json(users);
 
-export { signup, login };
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+};
+
+export { signup, login, getAllUsers };

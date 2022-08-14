@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 
+import Users from './components/Users/Users';
 import Login from './components/Login/Login';
 import Home from './components/Home/Home';
 import MainHeader from './components/MainHeader/MainHeader';
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/users' element={<Users />} />
         </Routes>
       </main>
     </Router>
