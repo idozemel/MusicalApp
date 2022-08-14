@@ -74,12 +74,13 @@ const getUserById = (id: string) => {
         if (!user) reject({ status: 404, message: "No user found" });
         else resolve(user);
       })
-      .catch(() =>
+      .catch((err) => {
+        if (err?.code === 404) reject(err);
         reject({
           status: 500,
           message: "internal server error - Failed to find user",
-        })
-      );
+        });
+      });
   });
 };
 

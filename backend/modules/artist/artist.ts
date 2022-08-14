@@ -15,8 +15,6 @@ const artistSchema = new Schema<IArtist>({
   },
   link: {
     type: String,
-    required: true,
-    unique: true,
   },
   songs: [
     {
