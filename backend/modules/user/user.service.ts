@@ -3,6 +3,7 @@ import User, { IUser } from "./user";
 import jwt from "jsonwebtoken";
 import mongoose, { MongooseError } from "mongoose";
 import bcrypt from "bcrypt";
+import { ServerError } from "../../ServerError";
 
 const addUser = ({ email, username, password, isAdmin = false }: IUser) => {
   return new Promise<void>((resolve, reject) => {
@@ -10,13 +11,13 @@ const addUser = ({ email, username, password, isAdmin = false }: IUser) => {
       .exec()
       .then((user: IUser | null) => {
         if (user)
-          reject({ status: 411, message: "username or email already exists" });
+          reject(new ServerError(411, "username or email already exists"));
         else
           bcrypt.hash(password, 10, (err, hash) => {
             if (err) {
-              reject({ status: 500, message: "internal server error" });
+              reject(new ServerError());
             } else {
-              const user:any = new User({
+              const user: any = new User({
                 _id: new mongoose.Types.ObjectId(),
                 email,
                 username,
@@ -28,20 +29,13 @@ const addUser = ({ email, username, password, isAdmin = false }: IUser) => {
                 .then(() => resolve())
                 .catch((err: MongooseError) => {
                   if (err.name === "ValidationError")
-                    reject({
-                      status: 400,
-                      message: "Validation failed",
-                    });
-                  else
-                    reject({
-                      status: 500,
-                      message: "internal server error - failed saving new user",
-                    });
+                    reject(new ServerError(400, "Validation failed"));
+                  else reject(new ServerError());
                 });
             }
           });
       })
-      .catch((err) => reject(err));
+      .catch(() => reject(new ServerError()));
   });
 };
 
@@ -50,17 +44,16 @@ const getUser = (username: string, password: string) => {
     User.findOne({ username })
       .exec()
       .then((user) => {
-        if (!user)
-          return reject({ status: 411, message: "Failed to to login" });
+        if (!user) return reject(new ServerError(411, "Failed to to login"));
         bcrypt.compare(password, user.password, (err, res) => {
-          if (err) reject({ status: 411, message: "Failed to to login" });
+          if (err) reject(new ServerError(411, "Failed to to login"));
           if (res) {
             const token = jwt.sign({ _id: user._id }, "SomeSecretKey", {
               expiresIn: "1h",
             });
             resolve(token);
           }
-          reject({ status: 411, message: "Wrong username or password" });
+          reject(new ServerError(411, "Wrong username or password"));
         });
       });
   });
@@ -71,29 +64,27 @@ const getUserById = (id: string) => {
     User.findById(id)
       .exec()
       .then((user) => {
-        if (!user) reject({ status: 404, message: "No user found" });
+        if (!user) reject(new ServerError(404, "Not found"));
         else resolve(user);
       })
       .catch((err) => {
-        if (err?.code === 404) reject(err);
-        reject({
-          status: 500,
-          message: "internal server error - Failed to find user",
-        });
+        reject(new ServerError());
       });
   });
 };
 
 //Get All Users
 const getAllUsers = () => {
-  return User.find()
- 
+  try {
+    return User.find();
+  } catch {
+    throw new ServerError();
+  }
 };
-
 
 export const userService = {
   addUser,
   getUser,
   getUserById,
-  getAllUsers
+  getAllUsers,
 };

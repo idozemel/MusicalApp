@@ -1,12 +1,21 @@
+import { ServerError } from "../../ServerError";
 import Artist, { IArtist } from "./artist";
 
 const addArtist = async (artistToAdd: IArtist) => {
-  const artist = new Artist(artistToAdd);
-  return await artist.save();
+  try {
+    const artist = new Artist(artistToAdd);
+    return await artist.save();
+  } catch {
+    throw new ServerError();
+  }
 };
 
 const getArtist = async (name: string) => {
-  return await Artist.findOne({ name });
+  try {
+    return await Artist.findOne({ name });
+  } catch {
+    throw new ServerError();
+  }
 };
 
 const getArtistById = async (id: string) => {
@@ -14,23 +23,20 @@ const getArtistById = async (id: string) => {
     .exec()
     .then((artist) => {
       if (artist) return artist;
-      else
-        throw {
-          status: 404,
-          message: "not found",
-        };
+      else throw new ServerError();
     })
     .catch((err) => {
-      if (err?.status === 404) throw err;
-      throw {
-        status: 500,
-        message: "internal server error",
-      };
+      if (err instanceof ServerError) throw err;
+      throw new ServerError();
     });
 };
 
 const getArtists = async () => {
-  return await Artist.find();
+  try {
+    return await Artist.find();
+  } catch {
+    new ServerError();
+  }
 };
 
 export const artistService = {
