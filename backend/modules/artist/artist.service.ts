@@ -1,4 +1,3 @@
-import mongoose, { MongooseError } from "mongoose";
 import Artist, { IArtist } from "./artist";
 
 const addArtist = async (artistToAdd: IArtist) => {
@@ -10,4 +9,33 @@ const getArtist = async (name: string) => {
   return await Artist.findOne({ name });
 };
 
-export const artistService = { addArtist, getArtist };
+const getArtistById = async (id: string) => {
+  return Artist.findById(id)
+    .exec()
+    .then((artist) => {
+      if (artist) return artist;
+      else
+        throw {
+          status: 404,
+          message: "not found",
+        };
+    })
+    .catch((err) => {
+      if (err?.status === 404) throw err;
+      throw {
+        status: 500,
+        message: "internal server error",
+      };
+    });
+};
+
+const getArtists = async () => {
+  return await Artist.find();
+};
+
+export const artistService = {
+  addArtist,
+  getArtist,
+  getArtists,
+  getArtistById,
+};
