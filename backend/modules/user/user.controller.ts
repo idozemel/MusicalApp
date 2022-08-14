@@ -25,11 +25,10 @@ const login: RequestHandler = async (req, res, next) => {
   }
 };
 
-//todo new get users - needs to get all the users from the db
 const getAllUsers: RequestHandler = async (req, res) => {
   try {
-    const token = await userService.getAllUsers();
-    res.json(token);
+    const users = await userService.getAllUsers();
+    res.json(users);
 
   } catch (err) {
     res.status(400);

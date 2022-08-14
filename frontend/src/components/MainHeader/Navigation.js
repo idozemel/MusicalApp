@@ -11,7 +11,7 @@ const Navigation = () => {
       <ul>
         {cntx.isLoggedIn && (
           <li>
-            <a href="/">Users</a>
+            <a href="/Users">Users</a>
           </li>
         )}
         {cntx.isLoggedIn && (

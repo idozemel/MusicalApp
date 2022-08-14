@@ -16,7 +16,7 @@ const addUser = ({ email, username, password, isAdmin = false }: IUser) => {
             if (err) {
               reject({ status: 500, message: "internal server error" });
             } else {
-              const user = new User({
+              const user:any = new User({
                 _id: new mongoose.Types.ObjectId(),
                 email,
                 username,
@@ -83,7 +83,7 @@ const getUserById = (id: string) => {
   });
 };
 
-//todo get all users
+//Get All Users
 const getAllUsers = () => {
   return User.find()
  
