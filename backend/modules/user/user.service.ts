@@ -71,8 +71,16 @@ const getUserById = (id: string) => {
   });
 };
 
+//todo get all users
+const getAllUsers = () => {
+  return User.find()
+ 
+};
+
+
 export const userService = {
   addUser,
   getUser,
   getUserById,
+  getAllUsers
 };
