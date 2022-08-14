@@ -3,7 +3,6 @@ import AuthContext from '../../store/auth-context';
 import Button from '../UI/Button/Button';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 
-
 import Card from '../UI/Card/Card';
 import classes from './Home.module.css';
 import Login from '../Login/Login';
@@ -29,11 +28,16 @@ const Home = (props) => {
       <Button onClick={navToLoginHandler}>Login</Button>
       <p>Not a member yet? <u onClick={navToRegisterHandler}>Click here</u> to sign up!</p>
     </Card>
+
+
+
     {/* <Routes>
       <Route path="/login" element={<Login />} />
     </Routes> */}
     </>
   );
+
+  
 };
 
 export default Home;

@@ -4,7 +4,8 @@
 
 html {
   font-family: sans-serif;
-  background: #fff;
+  background-image: url(../public/imgs/Blackend-bg.jpg);
+
 }
 
 body {
