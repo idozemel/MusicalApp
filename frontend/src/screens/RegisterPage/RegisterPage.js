@@ -20,15 +20,14 @@ const RegisterPage = () => {
 
   const userRegister = useSelector((state) => state.userRegister);
   const { loading, error } = userRegister;
-  const userInfo = localStorage.getItem('userInfo');
+  const userInfo = localStorage.getItem("userInfo");
   const navigate = useNavigate();
   useEffect(() => {
     if (userInfo) {
-      dispatch({type:USER_REGISTER_DONE}); //Just to clean up Redux storage.
+      dispatch({ type: USER_REGISTER_DONE }); //Just to clean up Redux storage.
       navigate("/");
     }
-  }, [navigate, userInfo,dispatch]);
-
+  }, [navigate, userInfo, dispatch]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -36,21 +35,29 @@ const RegisterPage = () => {
       setMessage("Passwords do not match");
     } else {
       setMessage(null);
-      dispatch(register( email, username, password));
+      dispatch(register(email, username, password));
     }
   };
-
 
   return (
     <MainScreen title="REGISTER">
       <div className="registerContainer">
-        {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-        {message && <ErrorMessage variant="danger">{message}</ErrorMessage>}
+        {error && (
+          <ErrorMessage variant="danger" className="inputs">
+            {error}
+          </ErrorMessage>
+        )}
+        {message && (
+          <ErrorMessage variant="danger" className="inputs">
+            {message}
+          </ErrorMessage>
+        )}
         {loading && <Loading />}
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="formName">
             <Form.Label>Username</Form.Label>
             <Form.Control
+              className="inputs"
               type="text"
               value={username}
               placeholder="Enter Name"
@@ -61,6 +68,7 @@ const RegisterPage = () => {
           <Form.Group className="mb-3" controlId="formEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
+              className="inputs"
               type="email"
               value={email}
               placeholder="Enter email"
@@ -71,6 +79,7 @@ const RegisterPage = () => {
           <Form.Group className="mb-3" controlId="formPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
+              className="inputs"
               type="password"
               value={password}
               placeholder="Password"
@@ -81,6 +90,7 @@ const RegisterPage = () => {
           <Form.Group className="mb-3" controlId="formConfirmPassword">
             <Form.Label>Confirm Password</Form.Label>
             <Form.Control
+              className="inputs"
               type="password"
               value={confirmPassword}
               placeholder="Confirm Password"
