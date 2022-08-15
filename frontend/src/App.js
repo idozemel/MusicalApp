@@ -1,30 +1,29 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import Users from './components/Users/Users';
-import Login from './components/Login/Login';
-import Home from './components/Home/Home';
-import MainHeader from './components/MainHeader/MainHeader';
-import AuthContext from './store/auth-context';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import Register from './components/Register/Register';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import Footer from './components/Footer/Footer';
+import LandingPage from './screens/LandingPage/LandingPage';
+import LoginPage from './screens/LoginPage/LoginPage';
+import RegisterPage from './screens/RegisterPage/RegisterPage';
+import Header from './components/Header/Header';
 
-function App() {
-
-//const cntx = useContext(AuthContext);
+const App = () => {
   return (
-    <Router>
-      <MainHeader/>
+    <BrowserRouter>
+      <Header />
       <main>
-      <Routes>
-        {/* {!cntx.isLoggedIn && <Login />} */}
-        {/* <Home /> */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/users' element={<Users />} />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          {/* <Route path="/mynotes" element={<MyNotes />} /> */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />}/>
+          {/* <Route path="/createnote" element={<CreateNote />}/> */}
+          {/* <Route path="/note/:id" element={<SingleNote />}/> */}
+
         </Routes>
       </main>
-    </Router>
+      <Footer />
+    </BrowserRouter>
   );
 }
 
