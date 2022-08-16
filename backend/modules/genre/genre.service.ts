@@ -1,4 +1,4 @@
-import mongoose, { MongooseError } from "mongoose";
+import { ServerError } from "../../ServerError";
 import Genre, { IGenre } from "./genre";
 
 const addGenres = async (genres: string[]) => {
@@ -15,7 +15,21 @@ const getGenre = async (name: string) => {
   return await Genre.findOne({ name });
 };
 
+const getGenres = async () => {
+  try {
+    return await Genre.find();
+  } catch {
+    throw new ServerError();
+  }
+};
+
+const getGenreById = async (_id: string) => {
+  return await Genre.findOne({ _id });
+};
+
 export const genreService = {
   addGenres,
+  getGenres,
+  getGenreById,
   getGenre,
 };
