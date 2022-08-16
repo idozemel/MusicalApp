@@ -12,8 +12,8 @@ const LandingPage = () => {
                     <h1 className='title'>Welcome to Musica-App</h1>
                     <p className='subtitle'>Eize muzika atem olhim lauf ba avir</p>
                     <div className='buttonContainer'>
-                        <Link to='/login'>
-                            <Button size="lg" className='landingButton'>Best Songs</Button>
+                        <Link to='/songs'>
+                            <Button size="lg" className='landingButton'>All Songs</Button>
                         </Link>
                         <Link to='/register'>
                             <Button size="lg" className='landingButton' variant='outline-primary'>Genres</Button>

@@ -6,6 +6,7 @@ import LandingPage from './screens/LandingPage/LandingPage';
 import LoginPage from './screens/LoginPage/LoginPage';
 import RegisterPage from './screens/RegisterPage/RegisterPage';
 import Header from './components/Header/Header';
+import SongsPage from './screens/SongsPage/SongsPage';
 
 const App = () => {
   return (
@@ -14,7 +15,7 @@ const App = () => {
       <main>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          {/* <Route path="/mynotes" element={<MyNotes />} /> */}
+          <Route path="/songs" element={<SongsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />}/>
           {/* <Route path="/createnote" element={<CreateNote />}/> */}
