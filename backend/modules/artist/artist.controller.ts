@@ -4,8 +4,8 @@ import { artistService } from "./artist.service";
 
 const getArtists: RequestHandler = async (req, res) => {
   try {
-    const songs = await artistService.getArtists();
-    res.status(200).json(songs);
+    const artists = await artistService.getArtists();
+    res.json(artists);
   } catch (err) {
     if (err instanceof ServerError) res.status(err.code);
     res.json(err);
@@ -16,8 +16,7 @@ const getArtist: RequestHandler = async (req, res) => {
   const { id } = req.params;
   try {
     const artist = await artistService.getArtistById(id);
-    console.log(artist);
-    res.status(200).send(artist);
+    res.send(artist);
   } catch (err) {
     if (err instanceof ServerError) res.status(err.code);
     res.json(err);
@@ -27,11 +26,12 @@ const getArtist: RequestHandler = async (req, res) => {
 const saveArtist: RequestHandler = async (req, res) => {
   try {
     const savedArtist = await artistService.addArtist(req.body);
-    res.status(200).json(savedArtist);
+    res.json(savedArtist);
   } catch (err) {
     if (err instanceof ServerError) res.status(err.code);
     res.json(err);
   }
 };
+
 
 export { saveArtist, getArtists, getArtist };

@@ -10,6 +10,16 @@ const getSongs: RequestHandler = async (req, res, next) => {
   }
 };
 
+const getSong: RequestHandler = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const songs = await songService.getSong(id);
+    res.json(songs);
+  } catch (err) {
+    res.json(err);
+  }
+};
+
 const saveSong: RequestHandler = async (req, res, next) => {
   try {
     songService.addSong(req.body);
@@ -19,4 +29,4 @@ const saveSong: RequestHandler = async (req, res, next) => {
   }
 };
 
-export { getSongs, saveSong };
+export { getSongs, saveSong, getSong };

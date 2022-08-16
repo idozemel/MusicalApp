@@ -2,6 +2,7 @@ import router from "./routes";
 import mongoose from "mongoose";
 import { configConstants } from "./config";
 import { scrapingService } from "./modules/scraping/scraping.service";
+import { genreService } from "./modules/genre/genre.service";
 
 const express = require("express");
 const bodyParser = require("body-parser");

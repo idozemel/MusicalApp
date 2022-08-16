@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { getSongs, saveSong } from "./song.controller";
+import { getSong, getSongs, saveSong } from "./song.controller";
 const songRouter = Router();
 
-// songRouter.get("/songs", login);
 songRouter.post("/", saveSong);
 songRouter.get("/", getSongs);
+songRouter.get("/:id", getSong);
 
 export default songRouter;
