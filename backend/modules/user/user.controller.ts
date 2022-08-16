@@ -36,4 +36,14 @@ const getAllUsers: RequestHandler = async (req, res) => {
   }
 };
 
-export { signup, login, getAllUsers };
+const getUserById: RequestHandler = async (req, res) => {
+  try {
+    const user = await userService.getUserById(req._id);
+    res.json(user);
+  } catch (err) {
+    if (err instanceof ServerError) res.status(err.code);
+    res.json(err);
+  }
+};
+
+export { signup, login, getAllUsers, getUserById };

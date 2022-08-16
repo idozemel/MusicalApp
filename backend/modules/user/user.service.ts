@@ -51,6 +51,7 @@ const getUser = (username: string, password: string) => {
             const token = jwt.sign({ _id: user._id }, "SomeSecretKey", {
               expiresIn: "1h",
             });
+            
             resolve(token);
           }
           reject(new ServerError(411, "Wrong username or password"));

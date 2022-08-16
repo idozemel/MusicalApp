@@ -45,7 +45,7 @@ const Header = () => {
                 <Link to="mysongs">My Songs</Link>
               </Nav.Link>
               <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">
+                <NavDropdown.Item as={Link} to="/myProfile">
                   My Profile
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
