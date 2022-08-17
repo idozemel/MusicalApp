@@ -9,7 +9,7 @@ usersRouter.post('/signup', signup)
 usersRouter.get('/', getAllUsers);
 
 //GET user by id
-usersRouter.get('/', getUserById);
+usersRouter.get('/:id', getUserById);
 
 
 export default usersRouter

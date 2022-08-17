@@ -38,7 +38,8 @@ const getAllUsers: RequestHandler = async (req, res) => {
 
 const getUserById: RequestHandler = async (req, res) => {
   try {
-    const user = await userService.getUserById(req._id);
+    const { id } = req.params;
+    const user = await userService.getUserById(id);
     res.json(user);
   } catch (err) {
     if (err instanceof ServerError) res.status(err.code);
