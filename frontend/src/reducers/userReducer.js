@@ -43,3 +43,9 @@ export const userRegisterReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const getUserReducer = (state = {}, action) => {
+  return {
+    userInfo: action.payload 
+  }
+}; 
