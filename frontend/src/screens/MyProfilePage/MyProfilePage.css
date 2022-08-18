@@ -1,5 +1,14 @@
-.loginContainer{
-    display: flex;
-    flex-direction: column;
-    margin: 20px;
+.profileCard{
+    width: 380px;
+    border: none;
+    border-radius: 15px;
+    padding: 8px;
+    top: 12px;
+    background-color: #fff;
+    position: relative;
+    height: 370px;
+}
+
+.text{
+    font-size: 25px;
 }

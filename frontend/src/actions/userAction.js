@@ -78,3 +78,10 @@ export const register = (email, username, password) => async (dispatch) => {
     });
   }
 };
+
+
+export const getUser = () => async (dispatch) => {
+  return{
+    type: 'GET_USER',
+  };
+};
