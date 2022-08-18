@@ -31,12 +31,17 @@ const getSong = async (id: string) => {
   }
 };
 
+function isASong(obj: any): obj is ISong {
+  return "artist" in obj && "name" in obj && "genre" in obj;
+}
+
 const addSong = async (songToAdd: ISong) => {
-  const artistName = songToAdd.artist.name
-    .split("&")[0]
-    .split("Feat.")[0]
-    .trim();
+  if (!isASong(songToAdd)) return new ServerError(400, "Bad request");
   try {
+    const artistName = songToAdd.artist.name
+      .split("&")[0]
+      .split("Feat.")[0]
+      .trim();
     const isSongExist = await getSongByName(songToAdd.name);
     const genre = await genreService.getGenre(songToAdd.genre.name);
     const artist =
@@ -45,17 +50,22 @@ const addSong = async (songToAdd: ISong) => {
         ...songToAdd.artist,
         name: artistName,
       }));
+      console.log(songToAdd);
+      console.log(genre);
+      console.log(artist);
     if (isSongExist || !genre || !artist) return;
     const song = new Song({
       ...songToAdd,
       genre,
       artist,
     });
+    console.log("enter");
     genre.songs?.push(song);
     artist.songs?.push(song);
     await artist.save();
     await genre.save();
     await song.save();
+    return song;
   } catch {
     throw new ServerError();
   }
