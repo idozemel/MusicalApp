@@ -1,4 +1,5 @@
 import {
+  GET_USER,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -30,22 +31,25 @@ export const userLoginReducer = (state = {}, action) => {
 export const userRegisterReducer = (state = {}, action) => {
   switch (action.type) {
     case USER_REGISTER_REQUEST:
-      return {loading:true};
+      return { loading: true };
 
     case USER_REGISTER_SUCCESS:
-        return { loading: false, userInfo: action.payload };
+      return { loading: false, userInfo: action.payload };
 
     case USER_REGISTER_FAIL:
-        return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload };
     case USER_REGISTER_DONE:
-        return {};
+      return {};
     default:
       return state;
   }
 };
 
 export const getUserReducer = (state = {}, action) => {
-  return {
-    userInfo: action.payload 
+  switch (action.type) {
+    case GET_USER:
+      return { loading: false, userInfo: action.payload };
+    default:
+      return state;
   }
-}; 
+};

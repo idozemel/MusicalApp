@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  GET_USER,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -8,15 +9,15 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
 } from "../constants/userConstants";
-
+import { configWithToken } from "./configWithToken";
+const config = {
+  headers: {
+    "Content-type": "application/json",
+  },
+};
 export const login = (username, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_REQUEST });
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
 
     const { data } = await axios.post(
       "http://localhost:3030/api/user/login",
@@ -49,11 +50,6 @@ export const logout = () => async (dispatch) => {
 export const register = (email, username, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_REGISTER_REQUEST });
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
 
     const { data } = await axios.post(
       "http://localhost:3030/api/user/signup",
@@ -79,9 +75,18 @@ export const register = (email, username, password) => async (dispatch) => {
   }
 };
 
-
 export const getUser = () => async (dispatch) => {
-  return{
-    type: 'GET_USER',
-  };
+  try {
+    console.log("enter 2");
+    const { data } = await axios.get(
+      "http://localhost:3030/api/user/",
+      configWithToken(localStorage.getItem("userInfo"))
+    );
+    dispatch({
+      type: GET_USER,
+      payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
