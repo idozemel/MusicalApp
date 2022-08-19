@@ -15,13 +15,19 @@ const SongCreateEdit = () => {
 
   let { id } = useParams();
 
+  const [genres, setGenres] = useState();
+
   useEffect(() => {
-    const fetchSong = async () => {
-      //chceck if got by params
-      const song = await songService.getSongById(id);
-      setSong(song);
+    const initFetch = async () => {
+      const genres = await songService.getGenres();
+      const genreNames = genres.map((g) => g.name);
+      setGenres(genreNames);
+      if (id) {
+        const song = await songService.getSongById(id);
+        setSong(song);
+      }
     };
-    if (id) fetchSong();
+    if (id) initFetch();
   }, [id]);
 
   const onChangeHandlerSong = (ev) => {
@@ -77,12 +83,18 @@ const SongCreateEdit = () => {
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Genre</Form.Label>
-            <Form.Control
-              placeholder="Genre"
+            <Form.Select
               name="name"
-              value={song.genre.name}
+              aria-label="Genre"
               onChange={onChangeHandlerGenre}
-            />
+            >
+              {genres &&
+                genres.map((g) => (
+                  <option selected={g === song.genre.name} key={g} value={g}>
+                    {g}
+                  </option>
+                ))}
+            </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Artist name</Form.Label>

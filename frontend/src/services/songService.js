@@ -10,4 +10,14 @@ const getSongById = async (id) => {
   } catch {}
 };
 
-export default { getSongById };
+const getGenres = async (id) => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:3030/api/genre`,
+      configWithToken(localStorage.getItem("userInfo"))
+    );
+    return data;
+  } catch {}
+};
+
+export default { getSongById, getGenres };
