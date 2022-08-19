@@ -1,29 +1,41 @@
 import { RequestHandler } from "express";
 import { configConstants } from "../config";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { IUser } from "../modules/user/user";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: string | JwtPayload | undefined;
+      user?: IUser;
     }
   }
 }
 
+interface myJwtPayload {
+  user: IUser;
+}
+
 export const authenticateJWT: RequestHandler = (req, res, next) => {
   const authHeader = req.headers.authorization;
-
   if (authHeader) {
     const token = authHeader.split(" ")[1];
-    jwt.verify(token, configConstants.jwtSecret, (err, user) => {
-      if (err) {
-        return res.sendStatus(403);
-      }
+    try {
+      const { user } = jwt.verify(
+        token,
+        configConstants.jwtSecret
+      ) as myJwtPayload;
       req.user = user;
       next();
-    });
+    } catch {
+      return res.sendStatus(403);
+    }
   } else {
     res.sendStatus(401);
   }
+};
+
+export const requireAdmin: RequestHandler = (req, res, next) => {
+  const { user } = req;
+  if (!user || !user.isAdmin) return res.sendStatus(403);
+  next();
 };
