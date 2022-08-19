@@ -77,7 +77,6 @@ export const register = (email, username, password) => async (dispatch) => {
 
 export const getUser = () => async (dispatch) => {
   try {
-    console.log("enter 2");
     const { data } = await axios.get(
       "http://localhost:3030/api/user/",
       configWithToken(localStorage.getItem("userInfo"))
