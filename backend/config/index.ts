@@ -1,5 +1,6 @@
 
 export const configConstants = {
   mongoUrl: 'mongodb://localhost:27017',
-  dbName: "MusicalApp"
+  dbName: "MusicalApp",
+  jwtSecret: "secret"
 }

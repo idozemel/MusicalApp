@@ -1,15 +1,20 @@
 import { Router } from "express";
-import { login, signup, getAllUsers, getUserById } from "./user.controller";
-const usersRouter = Router()
+import { authenticateJWT } from "../../middlewares/auth";
+import {
+  login,
+  signup,
+  getAllUsers,
+  getUser,
+} from "./user.controller";
+const usersRouter = Router();
 
-usersRouter.post('/login', login)
-usersRouter.post('/signup', signup)
+usersRouter.post("/login", login);
+usersRouter.post("/signup", signup);
 
 //GET all users
-usersRouter.get('/', getAllUsers);
+usersRouter.get("/all", authenticateJWT, getAllUsers);
 
 //GET user by id
-usersRouter.get('/:id', getUserById);
+usersRouter.get("/", authenticateJWT, getUser);
 
-
-export default usersRouter
+export default usersRouter;

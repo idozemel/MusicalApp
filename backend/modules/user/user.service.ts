@@ -1,11 +1,12 @@
 import User, { IUser } from "./user";
 
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import mongoose, { MongooseError } from "mongoose";
 import bcrypt from "bcrypt";
 import { ServerError } from "../../ServerError";
+import { configConstants } from "../../config";
 
-const addUser = ({ email, username, password, isAdmin = false }: IUser) => {
+const addUser = ({ email, username, password }: Omit<IUser, "isAdmin">) => {
   return new Promise<void>((resolve, reject) => {
     User.findOne({ $or: [{ email }, { username }] })
       .exec()
@@ -22,7 +23,7 @@ const addUser = ({ email, username, password, isAdmin = false }: IUser) => {
                 email,
                 username,
                 password: hash,
-                isAdmin,
+                isAdmin: false,
               });
               return user
                 .save()
@@ -48,19 +49,27 @@ const getUser = (username: string, password: string) => {
         bcrypt.compare(password, user.password, (err, res) => {
           if (err) reject(new ServerError(411, "Failed to to login"));
           if (res) {
-            const token = jwt.sign({ _id: user._id }, "SomeSecretKey", {
-              expiresIn: "1h",
-            });
-            
-            resolve(token);
-          }
-          reject(new ServerError(411, "Wrong username or password"));
+            jwt.sign(
+              { user },
+              configConstants.jwtSecret,
+              {
+                expiresIn: "1h",
+              },
+              function (err, token) {
+                if (err) {
+                  reject(new ServerError());
+                } else {
+                  resolve(token);
+                }
+              }
+            );
+          } else reject(new ServerError(411, "Wrong username or password"));
         });
       });
   });
 };
 
-const getUserById = (id: string) => {
+const getUserById = (id: string | JwtPayload | undefined) => {
   return new Promise((resolve, reject) => {
     User.findById(id)
       .exec()
@@ -68,7 +77,7 @@ const getUserById = (id: string) => {
         if (!user) reject(new ServerError(404, "Not found"));
         else resolve(user);
       })
-      .catch((err) => {
+      .catch(() => {
         reject(new ServerError());
       });
   });

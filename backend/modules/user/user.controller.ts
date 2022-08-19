@@ -5,8 +5,8 @@ import { userService } from "./user.service";
 
 const signup: RequestHandler = async (req, res, next) => {
   try {
-    const { email, username, password, isAdmin }: IUser = req.body;
-    await userService.addUser({ email, username, password, isAdmin });
+    const { email, username, password }: Omit<IUser, "isAdmin"> = req.body;
+    await userService.addUser({ email, username, password });
     const token = await userService.getUser(username, password);
     res.json(token);
   } catch (err) {
@@ -36,10 +36,9 @@ const getAllUsers: RequestHandler = async (req, res) => {
   }
 };
 
-const getUserById: RequestHandler = async (req, res) => {
+const getUser: RequestHandler = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await userService.getUserById(id);
+    const { user } = req;
     res.json(user);
   } catch (err) {
     if (err instanceof ServerError) res.status(err.code);
@@ -47,4 +46,4 @@ const getUserById: RequestHandler = async (req, res) => {
   }
 };
 
-export { signup, login, getAllUsers, getUserById };
+export { signup, login, getAllUsers, getUser };
