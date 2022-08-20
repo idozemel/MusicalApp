@@ -7,8 +7,8 @@ const isAdmin = async () => {
       "http://localhost:3030/api/user/",
       configWithToken(localStorage.getItem("userInfo"))
     );
-    return data;
+    return data.isAdmin;
   } catch {}
 };
 
-export default { getCurrUser };
+export default { isAdmin };

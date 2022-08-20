@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { getAllSong } from "../../actions/songAction";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import songService from "../../services/songService";
 
@@ -14,7 +16,8 @@ const SongCreateEdit = () => {
   });
 
   let { id } = useParams();
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [genres, setGenres] = useState();
 
   useEffect(() => {
@@ -27,7 +30,7 @@ const SongCreateEdit = () => {
         setSong(song);
       }
     };
-    if (id) initFetch();
+    initFetch();
   }, [id]);
 
   const onChangeHandlerSong = (ev) => {
@@ -50,7 +53,10 @@ const SongCreateEdit = () => {
         <Form
           onSubmit={(ev) => {
             ev.preventDefault();
-            console.log(song);
+            songService.saveSong(id, song).then(() => {
+              navigate("/songs");
+              dispatch(getAllSong());
+            });
           }}
         >
           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -84,16 +90,24 @@ const SongCreateEdit = () => {
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Genre</Form.Label>
             <Form.Select
+              value={song.genre.name}
               name="name"
               aria-label="Genre"
               onChange={onChangeHandlerGenre}
             >
+              {song.genre.name && (
+                <option key={song.genre.name} value={song.genre.name}>
+                  {song.genre.name}
+                </option>
+              )}
               {genres &&
-                genres.map((g) => (
-                  <option selected={g === song.genre.name} key={g} value={g}>
-                    {g}
-                  </option>
-                ))}
+                genres
+                  .filter((g) => g !== song.genre.name)
+                  .map((g) => (
+                    <option key={g} value={g}>
+                      {g}
+                    </option>
+                  ))}
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicPassword">

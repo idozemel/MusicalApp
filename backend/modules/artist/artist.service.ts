@@ -5,7 +5,9 @@ const addArtist = async (artistToAdd: IArtist) => {
   try {
     const artist = new Artist(artistToAdd);
     return await artist.save();
-  } catch {
+  } catch (err) {
+    console.log(err);
+
     throw new ServerError();
   }
 };

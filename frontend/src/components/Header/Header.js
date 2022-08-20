@@ -32,11 +32,7 @@ const Header = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="m-auto">
             <Form inline="true">
-              <FormControl
-                type="text"
-                placeholder="Search"
-                className="mr-sm-2" // <img src= alt= />
-              />
+       
             </Form>
           </Nav>
           {userInfo && (
@@ -57,9 +53,7 @@ const Header = () => {
           )}
           {!userInfo && (
             <Nav>
-              <Nav.Link>
-                <Link to="login">Login/Register</Link>
-              </Nav.Link>
+                <Link to="login">Login</Link>
             </Nav>
           )}
         </Navbar.Collapse>

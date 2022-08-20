@@ -2,6 +2,8 @@ import { genreService } from "../genre/genre.service";
 import { artistService } from "../artist/artist.service";
 import Song, { ISong } from "./song";
 import { ServerError } from "../../ServerError";
+import Artist from "../artist/artist";
+import Genre from "../genre/genre";
 
 const addSongs = async (songs: ISong[]) => {
   try {
@@ -50,16 +52,12 @@ const addSong = async (songToAdd: ISong) => {
         ...songToAdd.artist,
         name: artistName,
       }));
-      console.log(songToAdd);
-      console.log(genre);
-      console.log(artist);
     if (isSongExist || !genre || !artist) return;
     const song = new Song({
       ...songToAdd,
       genre,
       artist,
     });
-    console.log("enter");
     genre.songs?.push(song);
     artist.songs?.push(song);
     await artist.save();
@@ -67,6 +65,58 @@ const addSong = async (songToAdd: ISong) => {
     await song.save();
     return song;
   } catch {
+    throw new ServerError();
+  }
+};
+
+const editSong = async (_id: string, song: ISong) => {
+  if (!isASong(song)) return new ServerError(400, "Bad request");
+  try {
+    let artist, genre;
+    const songToEdit = await Song.findById({ _id });
+    genre = await genreService.getGenre(song.genre.name);
+
+    if (song.genre.name !== songToEdit?.genre.name) {
+      genre?.songs!.push(song);
+      await genre?.save();
+      await Genre.findOneAndUpdate(
+        { _id: songToEdit?.genre },
+        { $pull: { songs: _id } }
+      );
+    }
+
+    const newArtist = {
+      name: song.artist.name,
+      link: song.artist.link,
+    };
+    artist = await artistService.getArtist(song.artist.name);
+    if (song.artist.name === songToEdit?.artist.name) {
+      await artist?.updateOne({
+        $set: { ...newArtist },
+      });
+    } else {
+      await Artist.findOneAndUpdate(
+        { _id: songToEdit?.artist },
+        { $pull: { songs: _id } }
+      );
+      if (artist) {
+        artist?.songs!.push(song);
+        await artist?.save();
+        await artist?.updateOne({
+          $set: { ...newArtist },
+        });
+      } else {
+        artist = await artistService.addArtist(newArtist);
+        artist?.songs!.push(song);
+        await artist?.save();
+      }
+    }
+
+    await Song.updateOne(
+      { _id },
+      { $set: { ...song, genre: genre!._id, artist: artist!._id } }
+    );
+  } catch (err) {
     throw new ServerError();
   }
 };
@@ -79,5 +129,6 @@ export const songService = {
   addSongs,
   addSong,
   getSongs,
+  editSong,
   getSong,
 };

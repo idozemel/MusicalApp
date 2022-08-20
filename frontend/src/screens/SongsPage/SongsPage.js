@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import ErrorMessage from "../../components/Handlers/ErrorMessage";
@@ -6,33 +6,56 @@ import Loading from "../../components/Handlers/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import { getAllSong } from "../../actions/songAction";
 import { useNavigate } from "react-router-dom";
+import userService from "../../services/userService";
 const SongsPage = () => {
   const dispatch = useDispatch();
 
   const allSongs = useSelector((state) => state.getAllSongs);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { loading, error, songsInfo } = allSongs;
   const navigate = useNavigate();
   useEffect(() => {
+    userService.isAdmin().then((isAdmin) => {
+      setIsAdmin(isAdmin);
+    });
     if (!songsInfo) {
       dispatch(getAllSong());
     }
-  }, [dispatch, songsInfo]);
+  }, [dispatch, songsInfo, isAdmin]);
 
   return (
-    <MainScreen title="SONGS">
+    <MainScreen title="Songs">
       {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
       {loading && <Loading />}
       <Container>
+        {isAdmin && (
+          <Row className="mb-3">
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={() => navigate(`/song/edit`)}
+            >
+              Add New Song
+            </Button>
+          </Row>
+        )}
         <Row>
           {songsInfo?.map((song) => {
             return (
               <Col xs="3">
                 <Card
-                  style={{ cursor: "pointer" }}
+                  className="mb-3"
+                  style={{ cursor: isAdmin && "pointer" }}
                   key={song._id}
-                  onClick={() => navigate(`/song/edit/${song._id}`)}
+                  onClick={() => isAdmin && navigate(`/song/edit/${song._id}`)}
                 >
-                  <Card.Img variant="top" src={song.image} />
+                  <Card.Img
+                    variant="top"
+                    src={
+                      song.image ||
+                      "https://i2.wp.com/www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png?resize=300%2C300&ssl=1"
+                    }
+                  />
                   <Card.Body>
                     <Card.Title>{song.name}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">

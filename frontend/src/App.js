@@ -14,18 +14,16 @@ const App = () => {
   return (
     <BrowserRouter>
       <Header />
-      <main>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/songs" element={<SongsPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/myProfile" element={<MyProfilePage />} />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/songs" element={<SongsPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/myProfile" element={<MyProfilePage />} />
 
-          <Route path="/song/edit" element={<SongCreateEdit />} />
-          <Route path="/song/edit/:id" element={<SongCreateEdit />} />
-        </Routes>
-      </main>
+        <Route path="/song/edit" element={<SongCreateEdit />} />
+        <Route path="/song/edit/:id" element={<SongCreateEdit />} />
+      </Routes>
       <Footer />
     </BrowserRouter>
   );

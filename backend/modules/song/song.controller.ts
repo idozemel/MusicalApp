@@ -25,7 +25,10 @@ const getSong: RequestHandler = async (req, res, next) => {
 
 const saveSong: RequestHandler = async (req, res, next) => {
   try {
-    const song = await songService.addSong(req.body);
+    const { id } = req.params;
+    let song;
+    if (id) song = await songService.editSong(id, req.body);
+    else song = await songService.addSong(req.body);
     res.json(song);
   } catch (err) {
     if (err instanceof ServerError) res.status(err.code);
