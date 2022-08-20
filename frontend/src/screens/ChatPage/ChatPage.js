@@ -18,14 +18,6 @@ const ChatPage = () => {
 
   const inputHander = (ev) => [setMessageToSend(ev.target.value)];
 
-  // form.addEventListener("submit", function (e) {
-  //   e.preventDefault();
-  //   if (input.value) {
-  //     socket.emit("chat message", input.value);
-  //     input.value = "";
-  //   }
-  // });
-
   return (
     <Container className="h-75 mt-5 d-flex flex-column justify-content-space-between">
       <Stack gap={3} className="flex-column d-flex">
