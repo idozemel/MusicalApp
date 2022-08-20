@@ -9,6 +9,7 @@ import MyProfilePage from "./screens/MyProfilePage/MyProfilePage";
 import Header from "./components/Header/Header";
 import SongsPage from "./screens/SongsPage/SongsPage";
 import SongCreateEdit from "./screens/SongCreateEdit/SongCreateEdit";
+import ChatPage from "./screens/ChatPage/ChatPage";
 
 const App = () => {
   return (
@@ -20,7 +21,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/myProfile" element={<MyProfilePage />} />
-
+        <Route path="/chat" element={<ChatPage />} />
         <Route path="/song/edit" element={<SongCreateEdit />} />
         <Route path="/song/edit/:id" element={<SongCreateEdit />} />
       </Routes>

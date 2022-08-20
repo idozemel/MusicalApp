@@ -2,13 +2,12 @@ import router from "./routes";
 import mongoose from "mongoose";
 import { configConstants } from "./config";
 import { scrapingService } from "./modules/scraping/scraping.service";
-import { genreService } from "./modules/genre/genre.service";
 
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
 const app = express();
+const http = require("http").Server(app);
 
 // Express App Config
 app.use(bodyParser.json());
@@ -32,8 +31,22 @@ mongoose
 //Register routes with prefix
 app.use("/api/", router);
 
+const io = require("socket.io")(http, {
+  cors: {
+    origin: corsOptions.origin,
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket: any) => {
+  socket.on("chat message", (msg: string) => {
+    console.log("msg" + msg);
+    io.emit("chat message", msg);
+  });
+});
+
 const port = process.env.PORT || 3030;
-app.listen(port, async () => {
+http.listen(port, async () => {
   console.log("Server is running on port: " + port);
   if (!(await scrapingService.isScraped())) {
     await scrapingService.scrape();
