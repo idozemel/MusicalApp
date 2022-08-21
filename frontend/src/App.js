@@ -10,6 +10,7 @@ import Header from "./components/Header/Header";
 import SongsPage from "./screens/SongsPage/SongsPage";
 import SongCreateEdit from "./screens/SongCreateEdit/SongCreateEdit";
 import ChatPage from "./screens/ChatPage/ChatPage";
+import DashboardPage from "./screens/Dashboard/DashboardPage";
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/song/edit" element={<SongCreateEdit />} />
         <Route path="/song/edit/:id" element={<SongCreateEdit />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>
