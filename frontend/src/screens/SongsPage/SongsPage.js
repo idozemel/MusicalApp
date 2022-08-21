@@ -6,7 +6,7 @@ import Loading from "../../components/Handlers/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import { getAllSong } from "../../actions/songAction";
 import { useNavigate } from "react-router-dom";
-import userService from "../../services/userService";
+import { isHeAdmin } from "../../services/userService";
 const SongsPage = () => {
   const dispatch = useDispatch();
 
@@ -15,7 +15,7 @@ const SongsPage = () => {
   const { loading, error, songsInfo } = allSongs;
   const navigate = useNavigate();
   useEffect(() => {
-    userService.isAdmin().then((isAdmin) => {
+    isHeAdmin().then((isAdmin) => {
       setIsAdmin(isAdmin);
     });
     if (!songsInfo) {

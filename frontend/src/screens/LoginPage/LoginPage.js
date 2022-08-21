@@ -6,7 +6,7 @@ import "./LoginPage.css";
 import Loading from "../../components/Handlers/Loading";
 import ErrorMessage from "../../components/Handlers/ErrorMessage";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../actions/userAction";
+import { getUser, login } from "../../actions/userAction";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -20,9 +20,10 @@ const LoginPage = () => {
   let navigate = useNavigate();
   useEffect(() => {
     if (userInfo) {
+      dispatch(getUser());
       navigate("/");
     }
-  }, [navigate, userInfo]);
+  }, [navigate,dispatch, userInfo]);
 
   const submitHandler = async (e) => {
     e.preventDefault();

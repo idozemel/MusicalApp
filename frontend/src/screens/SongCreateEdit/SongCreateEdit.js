@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAllSong } from "../../actions/songAction";
 import MainScreen from "../../components/MainScreen/MainScreen";
-import songService from "../../services/songService";
+import { getGenres, getSongById, saveSong } from "../../services/songService";
 
 const SongCreateEdit = () => {
   const [song, setSong] = useState({
@@ -22,11 +22,11 @@ const SongCreateEdit = () => {
 
   useEffect(() => {
     const initFetch = async () => {
-      const genres = await songService.getGenres();
+      const genres = await getGenres();
       const genreNames = genres.map((g) => g.name);
       setGenres(genreNames);
       if (id) {
-        const song = await songService.getSongById(id);
+        const song = await getSongById(id);
         setSong(song);
       }
     };
@@ -47,13 +47,17 @@ const SongCreateEdit = () => {
     setSong((song) => ({ ...song, genre }));
   };
 
+  const goBackHandler = () => {
+    navigate("/songs");
+  };
+
   return (
     song && (
       <MainScreen title="Song">
         <Form
           onSubmit={(ev) => {
             ev.preventDefault();
-            songService.saveSong(id, song).then(() => {
+            saveSong(id, song).then(() => {
               navigate("/songs");
               dispatch(getAllSong());
             });
@@ -128,9 +132,19 @@ const SongCreateEdit = () => {
               onChange={onChangeHandlerArtist}
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
+          <div style={{ display: "flex" }}>
+            <span style={{ alignSelf: "center", flex: "1" }}>
+              <Button variant="primary" type="submit">Submit</Button>
+            </span>
+            <Button
+              className="mx-2"
+              variant="light"
+              size="md"
+              onClick={goBackHandler}
+            >
+              Back
+            </Button>
+          </div>
         </Form>
       </MainScreen>
     )

@@ -1,7 +1,7 @@
 import { configWithToken } from "../actions/configWithToken";
 import axios from "axios";
 
-const isAdmin = async () => {
+export const isHeAdmin = async () => {
   try {
     const { data } = await axios.get(
       "http://localhost:3030/api/user/",
@@ -11,4 +11,3 @@ const isAdmin = async () => {
   } catch {}
 };
 
-export default { isAdmin };

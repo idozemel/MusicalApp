@@ -1,5 +1,8 @@
 import {
-  GET_USER,
+  GET_USER_FAIL,
+  GET_USER_LOGOUT,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -45,10 +48,20 @@ export const userRegisterReducer = (state = {}, action) => {
   }
 };
 
+
 export const getUserReducer = (state = {}, action) => {
   switch (action.type) {
-    case GET_USER:
+    case GET_USER_REQUEST:
+      return { loading: true };
+
+    case GET_USER_SUCCESS:
       return { loading: false, userInfo: action.payload };
+
+    case GET_USER_FAIL:
+      return { loading: false, error: action.payload };
+
+    case GET_USER_LOGOUT:
+      return {};
     default:
       return state;
   }

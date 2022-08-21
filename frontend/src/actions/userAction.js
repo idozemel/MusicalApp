@@ -1,6 +1,9 @@
 import axios from "axios";
 import {
-  GET_USER,
+  GET_USER_FAIL,
+  GET_USER_LOGOUT,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -45,6 +48,7 @@ export const login = (username, password) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   localStorage.removeItem("userInfo");
   dispatch({ type: USER_LOGOUT });
+  dispatch({ type: GET_USER_LOGOUT });
 };
 
 export const register = (email, username, password) => async (dispatch) => {
@@ -77,15 +81,20 @@ export const register = (email, username, password) => async (dispatch) => {
 
 export const getUser = () => async (dispatch) => {
   try {
+    dispatch({ type: GET_USER_REQUEST });
+
     const { data } = await axios.get(
       "http://localhost:3030/api/user/",
       configWithToken(localStorage.getItem("userInfo"))
     );
+    dispatch({ type: GET_USER_SUCCESS, payload: data });
+  } catch (error) {
     dispatch({
-      type: GET_USER,
-      payload: data,
+      type: GET_USER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
-  } catch (err) {
-    console.log(err);
   }
 };

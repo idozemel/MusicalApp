@@ -1,6 +1,6 @@
 import { configWithToken } from "../actions/configWithToken";
 import axios from "axios";
-const getSongById = async (id) => {
+export const getSongById = async (id) => {
   try {
     const { data } = await axios.get(
       `http://localhost:3030/api/song/${id}`,
@@ -10,7 +10,7 @@ const getSongById = async (id) => {
   } catch {}
 };
 
-const getGenres = async () => {
+export const getGenres = async () => {
   try {
     const { data } = await axios.get(
       `http://localhost:3030/api/genre`,
@@ -20,7 +20,7 @@ const getGenres = async () => {
   } catch {}
 };
 
-const saveSong = async (id, song) => {
+export const saveSong = async (id, song) => {
   try {
     if (id) {
       const { data } = await axios.put(
@@ -40,4 +40,4 @@ const saveSong = async (id, song) => {
   } catch {}
 };
 
-export default { getSongById, getGenres, saveSong };
+// export default { getSongById, getGenres, saveSong };
