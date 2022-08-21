@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import "./MyProfilePage.css";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Badge, Button, Card, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
+import { getUser } from "../../actions/userAction"
 const MyProfilePage = () => {
   const user = useSelector((state) => state.getUser);
   const { userInfo } = user;
+  const dispatch = useDispatch();
 
-  return (
+  useEffect(() => {
+    if (!userInfo) {
+      dispatch(getUser());
+    }
+  }, [dispatch, userInfo]);
+
+  return userInfo && (
     <MainScreen title="My Profile">
       <Row className="m-auto align-self-center">
         <Col xs="2" />

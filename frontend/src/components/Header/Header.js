@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Button,
   Container,
   Form,
   Nav,
@@ -36,9 +37,9 @@ const Header = () => {
           </Nav>
           {userInfo && (
             <Nav>
-              <Nav.Link>
+              <Nav.Item>
                 <Link to="mysongs">My Songs</Link>
-              </Nav.Link>
+              </Nav.Item>
               <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                 <NavDropdown.Item as={Link} to="/myProfile">
                   My Profile

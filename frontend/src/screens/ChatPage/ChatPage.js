@@ -4,13 +4,15 @@ import { io } from "socket.io-client";
 import axios from "axios";
 const ChatPage = () => {
   const [socket, setSocket] = useState(null);
-  const [messages, setMessages] = useState(["Hello", "Hello", "How r ya?"]);
+  const [messages, setMessages] = useState([]);
   const [messageToSend, setMessageToSend] = useState("");
   useEffect(() => {
     const socket = io("http://localhost:3030");
     setSocket(socket);
     axios.get("http://localhost:3030/api/chat").then(({data}) => {
-      setMessages(data);
+      if(data){
+        setMessages(data);
+      }
     });
     socket.on("chat message", (msg) =>
       setMessages((messages) => [...messages, msg])
@@ -33,7 +35,7 @@ const ChatPage = () => {
   return (
     <Container className="h-75 mt-5 d-flex flex-column justify-content-space-between">
       <Stack gap={3} className=" p-3  flex-column d-flex overflow-y-scroll">
-        {messages.map((m, idx) => (
+        {messages?.map((m, idx) => (
           <Row key={idx} className="small p-3  text-white rounded-3 bg-primary">
             {m}
           </Row>
