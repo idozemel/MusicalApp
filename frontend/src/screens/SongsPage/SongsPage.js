@@ -40,9 +40,9 @@ const SongsPage = () => {
           </Row>
         )}
         <Row>
-          {songsInfo?.map((song) => {
+          {songsInfo?.map((song, idx) => {
             return (
-              <Col xs="3">
+              <Col xs="3" key={idx}>
                 <Card
                   className="mb-3"
                   style={{ cursor: isAdmin && "pointer" }}
@@ -61,9 +61,7 @@ const SongsPage = () => {
                     <Card.Subtitle className="mb-2 text-muted">
                       {song.artist.name}
                     </Card.Subtitle>
-                    <Card.Text>
-                      <p>Genre: {song.genre.name}</p>
-                    </Card.Text>
+                    <Card.Text>Genre: {song.genre.name}</Card.Text>
                     <Button
                       size="sm"
                       variant="primary"
