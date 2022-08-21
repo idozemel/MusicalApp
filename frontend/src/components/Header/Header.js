@@ -37,9 +37,8 @@ const Header = () => {
           </Nav>
           {userInfo && (
             <Nav>
-              <Nav.Item>
-                <Link to="mysongs">My Songs</Link>
-              </Nav.Item>
+              <Nav.Link as={Link} to="mysongs"> My Songs
+              </Nav.Link>
               <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                 <NavDropdown.Item as={Link} to="/myProfile">
                   My Profile
