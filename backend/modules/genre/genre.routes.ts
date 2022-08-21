@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getGenre, getGenres, saveGenre } from "./genre.controller";
+import { getGenre, getGenres, saveGenre, songsCount } from "./genre.controller";
 
 const genreRouter = Router();
 
@@ -11,6 +11,7 @@ genreRouter.put("/:id", saveGenre);
 
 //get all Genres
 genreRouter.get("/", getGenres);
+genreRouter.get("/songscount", songsCount);
 
 //get Genre by Id
 genreRouter.get("/:id", getGenre);

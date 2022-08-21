@@ -27,9 +27,29 @@ const getGenreById = async (_id: string) => {
   return await Genre.findOne({ _id });
 };
 
+const songsCount = async () => {
+  try {
+    return await Genre.aggregate([
+      {
+        $group: {
+          _id: "$name",
+          songs: {
+            $sum: {
+              $size: "$songs",
+            },
+          },
+        },
+      },
+    ]);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const genreService = {
   addGenres,
   getGenres,
   getGenreById,
   getGenre,
+  songsCount,
 };

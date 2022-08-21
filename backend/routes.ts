@@ -10,7 +10,7 @@ const router = Router();
 router.use("/user", usersRouter);
 router.use("/song", authenticateJWT, songRouter);
 router.use("/artist", authenticateJWT, artistRouter);
-router.use("/genre", authenticateJWT, genreRouter);
+router.use("/genre", genreRouter);
 router.use("/chat", chatRouter);
 
 export default router;
