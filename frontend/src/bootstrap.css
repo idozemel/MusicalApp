@@ -7392,6 +7392,9 @@ fieldset:disabled .btn {
   overflow: scroll !important;
 }
 
+.overflow-y-scroll {
+  overflow-y: scroll !important;
+}
 .d-inline {
   display: inline !important;
 }
