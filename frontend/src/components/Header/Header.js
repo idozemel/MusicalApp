@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
-  Button,
   Container,
   Form,
   Nav,
@@ -9,13 +8,19 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { logout } from "../../actions/userAction";
+import { getUser, logout } from "../../actions/userAction";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  useEffect(() => {
+    if (!userInfo) {
+      dispatch(getUser());
+    }
+  }, [dispatch, userInfo]);
 
   const logoutHandler = () => {
     dispatch(logout());
