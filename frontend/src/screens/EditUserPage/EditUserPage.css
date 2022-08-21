@@ -1,0 +1,8 @@
+.registerContainer{
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+.inputs{
+    width: 40%;
+}

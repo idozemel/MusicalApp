@@ -31,7 +31,7 @@ const Header = () => {
     <Navbar bg="dark" expand="lg" variant="dark">
       <Container>
         <Navbar.Brand>
-          <Link to="/">Musical-App</Link>
+          <Link to="/">MusicApp</Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
