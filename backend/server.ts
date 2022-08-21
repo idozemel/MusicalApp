@@ -2,6 +2,8 @@ import router from "./routes";
 import mongoose from "mongoose";
 import { configConstants } from "./config";
 import { scrapingService } from "./modules/scraping/scraping.service";
+import { Chat } from "./modules/messages/chat";
+import { chatService } from "./modules/messages/chat.service";
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -39,8 +41,8 @@ const io = require("socket.io")(http, {
 });
 
 io.on("connection", (socket: any) => {
-  socket.on("chat message", (msg: string) => {
-    console.log("msg" + msg);
+  socket.on("chat message", async (msg: string) => {
+    await chatService.addMessage(msg);
     io.emit("chat message", msg);
   });
 });
