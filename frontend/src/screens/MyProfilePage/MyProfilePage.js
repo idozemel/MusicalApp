@@ -31,19 +31,20 @@ const MyProfilePage = () => {
           >
             <Card.Body>
               <Card.Title>
-              <h1><Badge pill bg="secondary"><strong style={{justifyContent:"center", alignSelf:"center"}}>{userInfo.username}</strong></Badge></h1>
+              <h4><Badge pill bg="badge bg-dark">User Name</Badge></h4>
+              <h2><Badge pill bg="secondary"><strong style={{justifyContent:"center", alignSelf:"center"}}>{userInfo.username}</strong></Badge></h2>
               </Card.Title>
               <br />
               <Card.Text>
-                Info:<br /> <strong>{userInfo.email}</strong>
+              <h4><Badge pill bg="badge bg-dark">Email</Badge></h4>
+              <h2><Badge pill bg="secondary"><strong style={{justifyContent:"center", alignSelf:"center"}}>{userInfo.email}</strong></Badge></h2>
               </Card.Text>
               <br />
               <div style={{ position: "absolute", left: "0", paddingLeft: "15px" }}>
-              <Button as={Link} to="/mysongs" variant="outline-light">Change Password</Button>
+              <Button as={Link} to="/mysongs" variant="outline-light">Edit</Button>
               </div>
               <div style={{ position: "absolute", right: "0", paddingRight: "15px" }}>
-              <Button as={Link} to="/mysongs" variant="outline-light">Edit</Button>
-              <Button as={Link} to="/mysongs" variant="light">Delete</Button>
+              <Button as={Link} to="/mysongs" variant="danger">Delete</Button>
               </div>
             </Card.Body>
           </Card>
