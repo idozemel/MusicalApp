@@ -31,13 +31,13 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="m-auto">
-            <Form inline="true">
-       
-            </Form>
+            <Form inline="true"></Form>
           </Nav>
           {userInfo && (
             <Nav>
-              <Nav.Link as={Link} to="mysongs"> My Songs
+              <Nav.Link as={Link} to="mysongs">
+                {" "}
+                My Songs
               </Nav.Link>
               <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                 <NavDropdown.Item as={Link} to="/myProfile">
@@ -52,7 +52,7 @@ const Header = () => {
           )}
           {!userInfo && (
             <Nav>
-                <Link to="login">Login</Link>
+              <Link to="login">Login</Link>
             </Nav>
           )}
         </Navbar.Collapse>
