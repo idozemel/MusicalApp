@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Container, Form, Row, Stack } from "react-bootstrap";
 import { io } from "socket.io-client";
+import axios from "axios";
 const ChatPage = () => {
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState(["Hello", "Hello", "How r ya?"]);
@@ -8,9 +9,12 @@ const ChatPage = () => {
   useEffect(() => {
     const socket = io("http://localhost:3030");
     setSocket(socket);
-    socket.on("chat message", function (msg) {
-      setMessages((messages) => [...messages, msg]);
+    axios.get("http://localhost:3030/api/chat").then(({data}) => {
+      setMessages(data);
     });
+    socket.on("chat message", (msg) =>
+      setMessages((messages) => [...messages, msg])
+    );
     return () => socket.close();
   }, []);
 
