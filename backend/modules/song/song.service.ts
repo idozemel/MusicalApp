@@ -136,7 +136,7 @@ const deleteSong = async (_id: string) => {
       { $pull: { songs: _id } }
     );
   } catch {
-    return new ServerError();
+    throw new ServerError();
   }
 };
 

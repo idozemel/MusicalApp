@@ -4,6 +4,9 @@ export interface IUser {
   email: string;
   username: string;
   password: string;
+  age: number;
+  gender: "male" | "female";
+  name: string;
   isAdmin: boolean;
 }
 
@@ -28,6 +31,18 @@ const userSchema = new Schema<IUser>({
   },
   password: {
     type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  gender: {
+    type: String,
+    required: true,
+  },
+  age: {
+    type: Number,
     required: true,
   },
   isAdmin: {
