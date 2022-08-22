@@ -29,7 +29,7 @@ const SongsPage = () => {
       {error && navigate('/login')}
       {loading && <Loading />}
       <Container>
-        {isAdmin && (
+        {isAdmin  && (
           <Row className="mb-3">
             <Button
               variant="primary"
