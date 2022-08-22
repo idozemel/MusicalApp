@@ -3,13 +3,14 @@ import thunk from 'redux-thunk';
 import { userLoginReducer, userRegisterReducer, getUserReducer, getAllUsersReducer } from './reducers/userReducer'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { allSongsReducer } from './reducers/songReducer';
+import { getFilterUsersReducer } from './reducers/adminReducer';
 const reducer = combineReducers({
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
     getAllSongs: allSongsReducer,
     getUser: getUserReducer,
     getAllUsers: getAllUsersReducer,
-    getFilterUsers: getAllUsersReducer,
+    getFilterUsers: getFilterUsersReducer,
 });
 
 const initialState = {};

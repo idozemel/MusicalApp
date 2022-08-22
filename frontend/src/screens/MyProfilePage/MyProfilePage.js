@@ -59,14 +59,9 @@ const MyProfilePage = () => {
                   </Badge>
                 </Card.Text>
                 <br />
-                <div className="d-flex justify-content-between">
-                  <Button as={Link} to="/mysongs" variant="outline-light">
-                    Edit
-                  </Button>
-                  <Button as={Link} to="/mysongs" variant="danger">
-                    Delete
-                  </Button>
-                </div>
+                <Button as={Link} to="/mysongs" variant="outline-light">
+                  Edit
+                </Button>
               </Card.Body>
             </Card>
           </Col>

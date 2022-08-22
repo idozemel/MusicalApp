@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Container,
-  Form,
-  Nav,
-  Navbar,
-  NavDropdown,
-} from "react-bootstrap";
+import { Container, Form, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../actions/userAction";
@@ -14,7 +8,6 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = localStorage.getItem("userInfo");
-
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -34,19 +27,10 @@ const Header = () => {
           </Nav>
           {userInfo && (
             <Nav>
-              <Nav.Link as={Link} to="mysongs">
-                {" "}
-                My Songs
+              <Nav.Link as={Link} to="/myProfile">
+                My Profile
               </Nav.Link>
-              <NavDropdown id="basic-nav-dropdown">
-                <NavDropdown.Item as={Link} to="/myProfile">
-                  My Profile
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={logoutHandler}>
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
+              <Nav.Link onClick={logoutHandler}>Logout</Nav.Link>
             </Nav>
           )}
           {!userInfo && (
