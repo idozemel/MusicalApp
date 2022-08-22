@@ -99,14 +99,17 @@ const SongCreateEdit = () => {
               aria-label="Genre"
               onChange={onChangeHandlerGenre}
             >
-              {song.genre.name && (
-                <option key={song.genre.name} value={song.genre.name}>
-                  {song.genre.name}
+              {
+                <option
+                  key={song.genre.name || "Pop"}
+                  value={song.genre.name || "Pop"}
+                >
+                  {song.genre.name || "Pop"}
                 </option>
-              )}
+              }
               {genres &&
                 genres
-                  .filter((g) => g !== song.genre.name)
+                  .filter((g) => g !== (song.genre.name || "Pop"))
                   .map((g) => (
                     <option key={g} value={g}>
                       {g}
@@ -134,7 +137,9 @@ const SongCreateEdit = () => {
           </Form.Group>
           <div style={{ display: "flex" }}>
             <span style={{ alignSelf: "center", flex: "1" }}>
-              <Button variant="primary" type="submit">Submit</Button>
+              <Button variant="primary" type="submit">
+                Submit
+              </Button>
             </span>
             <Button
               className="mx-2"
