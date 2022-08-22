@@ -25,7 +25,7 @@ const SongsPage = () => {
 
   return (
     <MainScreen title="Songs">
-      {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+      {error && navigate('/login')}
       {loading && <Loading />}
       <Container>
         {isAdmin && (
