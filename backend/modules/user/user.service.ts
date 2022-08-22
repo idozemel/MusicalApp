@@ -6,7 +6,14 @@ import bcrypt from "bcrypt";
 import { ServerError } from "../../ServerError";
 import { configConstants } from "../../config";
 
-const addUser = ({ email, username, password }: Omit<IUser, "isAdmin">) => {
+const addUser = ({
+  email,
+  username,
+  password,
+  gender,
+  age,
+  name,
+}: Omit<IUser, "isAdmin">) => {
   return new Promise<void>((resolve, reject) => {
     User.findOne({ $or: [{ email }, { username }] })
       .exec()
@@ -22,6 +29,9 @@ const addUser = ({ email, username, password }: Omit<IUser, "isAdmin">) => {
                 _id: new mongoose.Types.ObjectId(),
                 email,
                 username,
+                gender: gender || "male",
+                age: age || 22,
+                name: name || "dudi",
                 password: hash,
                 isAdmin: false,
               });
@@ -40,6 +50,49 @@ const addUser = ({ email, username, password }: Omit<IUser, "isAdmin">) => {
   });
 };
 
+const updateUser = async (
+  id: string,
+  password: string,
+  name: string,
+  gender: string,
+  age: number
+) => {
+  return new Promise((resolve, reject) => {
+    User.findById(id)
+      .exec()
+      .then((user) => {
+        if (!user) reject(new ServerError(404, "user not found"));
+        bcrypt.compare(password, user!.password, (err, res) => {
+          if (err) {
+            reject(new ServerError());
+          }
+          if (res) {
+            user
+              ?.updateOne({ name, gender, age })
+              .exec()
+              .then(() => {
+                getUser(user.username, password)
+                  .then((token) => resolve(token))
+                  .catch((err) => {
+                    reject(err);
+                  });
+              })
+              .catch(() => reject(new ServerError()));
+          } else {
+            reject(new ServerError(401, "Wrong password"));
+          }
+        });
+      });
+  });
+};
+
+const deleteUser = async (id: string) => {
+  try {
+    return await User.findByIdAndDelete(id);
+  } catch {
+    throw new ServerError();
+  }
+};
 const getUser = (username: string, password: string) => {
   return new Promise((resolve, reject) => {
     User.findOne({ username })
@@ -50,7 +103,7 @@ const getUser = (username: string, password: string) => {
           if (err) reject(new ServerError(411, "Failed to to login"));
           if (res) {
             jwt.sign(
-              { user },
+              { user: { ...user.toObject(), password: null } },
               configConstants.jwtSecret,
               {
                 expiresIn: "1h",
@@ -94,7 +147,9 @@ const getAllUsers = () => {
 
 export const userService = {
   addUser,
+  updateUser,
   getUser,
   getUserById,
   getAllUsers,
+  deleteUser,
 };
