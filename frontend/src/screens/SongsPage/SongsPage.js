@@ -7,6 +7,7 @@ import MainScreen from "../../components/MainScreen/MainScreen";
 import { getAllSong } from "../../actions/songAction";
 import { useNavigate } from "react-router-dom";
 import { isHeAdmin } from "../../services/userService";
+import './SongsPage.css';
 const SongsPage = () => {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
@@ -40,6 +41,7 @@ const SongsPage = () => {
           </Row>
         )}
       <Form.Control
+        className="searchBox"
         type="text"
         id="searchId"
         placeholder="Search For Song"
