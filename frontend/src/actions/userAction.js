@@ -1,5 +1,8 @@
 import axios from "axios";
 import {
+  GET_ALL_USERS_FAIL,
+  GET_ALL_USERS_REQUEST,
+  GET_ALL_USERS_SUCCESS,
   GET_USER_FAIL,
   GET_USER_LOGOUT,
   GET_USER_REQUEST,
@@ -99,3 +102,24 @@ export const getUser = () => async (dispatch) => {
     });
   }
 };
+
+
+export const getAllUsers = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_ALL_USERS_REQUEST });
+
+    const { data } = await axios.get(
+      "http://localhost:3030/api/user/all",
+      configWithToken(localStorage.getItem("userInfo"))
+    );
+    dispatch({ type: GET_ALL_USERS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_ALL_USERS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}

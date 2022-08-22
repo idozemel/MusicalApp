@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../actions/userAction";
@@ -11,6 +11,9 @@ import { USER_REGISTER_DONE } from "../../constants/userConstants";
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -33,9 +36,16 @@ const RegisterPage = () => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
-    } else {
+    }
+    else if(gender.length < 3){
+      setMessage("Choose a gender");
+    }
+    else if(age < 13){
+      setMessage("You must be over 14 to register");
+    }
+    else {
       setMessage(null);
-      dispatch(register(email, username, password));
+      dispatch(register(email, username, password)); //Need to add gender age and first name here, also on the action.
     }
   };
 
@@ -54,13 +64,13 @@ const RegisterPage = () => {
         )}
         {loading && <Loading />}
         <Form onSubmit={submitHandler}>
-          <Form.Group className="mb-3" controlId="formName">
+          <Form.Group className="mb-3" controlId="formUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control
               className="inputs"
               type="text"
               value={username}
-              placeholder="Enter Name"
+              placeholder="Enter Username"
               onChange={(e) => setUsername(e.target.value)}
             />
           </Form.Group>
@@ -73,6 +83,28 @@ const RegisterPage = () => {
               value={email}
               placeholder="Enter email"
               onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formName">
+            <Form.Label>First name</Form.Label>
+            <Form.Control
+              className="inputs"
+              type="text"
+              value={name}
+              placeholder="Enter first name"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formAge">
+            <Form.Label>Age</Form.Label>
+            <Form.Control
+              className="inputs"
+              type="number"
+              value={age}
+              placeholder="Enter Age"
+              onChange={(e) => setAge(e.target.value)}
             />
           </Form.Group>
 
@@ -97,6 +129,12 @@ const RegisterPage = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </Form.Group>
+
+          <Form.Label>Choose Gender</Form.Label>
+          <InputGroup className="mb-3">
+            <Button variant="outline-secondary" value={gender} onClick={e => setGender(e.target.childNodes[0].data)}>Male</Button>
+            <Button variant="outline-secondary" value={gender} onClick={e => setGender(e.target.childNodes[0].data)}>Female</Button>
+          </InputGroup>
 
           <Button variant="primary" size="lg" type="submit">
             REGISTER
