@@ -16,7 +16,6 @@ export const getFilterUsers = (filters) => async (dispatch) => {
       params: { age, text, gender },
       ...config,
     });
-    console.log(data);
     dispatch({ type: FILTER_USERS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

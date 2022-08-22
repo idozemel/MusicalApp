@@ -5,7 +5,6 @@ import {
 } from "../constants/adminConstant";
 
 export const getFilterUsersReducer = (state = {}, action) => {
-  console.log(action.payload);
 
   switch (action.type) {
     case FILTER_USERS_REQUEST:

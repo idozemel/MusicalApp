@@ -140,9 +140,6 @@ const getUserById = (id: string | JwtPayload | undefined) => {
 const getAllUsers = async (filters: any) => {
   try {
     const { text, gender, age } = filters;
-    console.log(gender);
-    console.log(text);
-    console.log(age);
 
     return await User.aggregate([
       {

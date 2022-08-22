@@ -43,7 +43,6 @@ const AdminPage = () => {
 
   const searchHandler = (e) => {
     e.preventDefault();
-    console.log(filters);
     dispatch(getFilterUsers(filters));
   };
 

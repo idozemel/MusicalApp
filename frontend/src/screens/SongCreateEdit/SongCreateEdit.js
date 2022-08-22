@@ -56,8 +56,12 @@ const SongCreateEdit = () => {
       <MainScreen title="Song">
         <Form
           onSubmit={(ev) => {
+            let songToSend;
             ev.preventDefault();
-            saveSong(id, song).then(() => {
+            if (!song?.genre?.name)
+              songToSend = { ...song, genre: { name: "Pop" } };
+            else songToSend = { ...song };
+            saveSong(id, songToSend).then(() => {
               navigate("/songs");
               dispatch(getAllSong());
             });
@@ -99,17 +103,14 @@ const SongCreateEdit = () => {
               aria-label="Genre"
               onChange={onChangeHandlerGenre}
             >
-              {
-                <option
-                  key={song.genre.name || "Pop"}
-                  value={song.genre.name || "Pop"}
-                >
-                  {song.genre.name || "Pop"}
+              {song.genre.name && (
+                <option key={song.genre.name} value={song.genre.name}>
+                  {song.genre.name}
                 </option>
-              }
+              )}
               {genres &&
                 genres
-                  .filter((g) => g !== (song.genre.name || "Pop"))
+                  .filter((g) => g !== song.genre.name)
                   .map((g) => (
                     <option key={g} value={g}>
                       {g}
