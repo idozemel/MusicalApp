@@ -1,15 +1,19 @@
 import { Router } from "express";
-import { authenticateJWT } from "../../middlewares/auth";
+import { authenticateJWT, requireAdmin } from "../../middlewares/auth";
 import {
   login,
   signup,
   getAllUsers,
   getUser,
+  updateUser,
+  deleteUser,
 } from "./user.controller";
 const usersRouter = Router();
 
 usersRouter.post("/login", login);
 usersRouter.post("/signup", signup);
+usersRouter.put("/:id", authenticateJWT, updateUser);
+usersRouter.delete("/:id", authenticateJWT, requireAdmin, deleteUser);
 
 //GET all users
 usersRouter.get("/all", authenticateJWT, getAllUsers);

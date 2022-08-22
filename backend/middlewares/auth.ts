@@ -6,13 +6,13 @@ import { IUser } from "../modules/user/user";
 declare global {
   namespace Express {
     interface Request {
-      user?: IUser;
+      user?: IUser & { _id: string };
     }
   }
 }
 
 interface myJwtPayload {
-  user: IUser;
+  user: IUser & { _id: string };
 }
 
 export const authenticateJWT: RequestHandler = (req, res, next) => {
@@ -37,5 +37,6 @@ export const authenticateJWT: RequestHandler = (req, res, next) => {
 export const requireAdmin: RequestHandler = (req, res, next) => {
   const { user } = req;
   if (!user || !user.isAdmin) return res.sendStatus(403);
+  req.user = { ...user };
   next();
 };

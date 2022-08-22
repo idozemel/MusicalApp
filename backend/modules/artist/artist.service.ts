@@ -37,7 +37,7 @@ const getArtists = async () => {
   try {
     return await Artist.find();
   } catch {
-    new ServerError();
+    throw new ServerError();
   }
 };
 
