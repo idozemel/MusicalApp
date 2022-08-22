@@ -23,18 +23,15 @@ const SongsPage = () => {
     }
   }, [dispatch, songsInfo, isAdmin]);
 
-<<<<<<< Updated upstream
-=======
-  useEffect(() => {
-    const initFetch = async () => {
-      const genre = await getGenres();
-      const genreNames = genre.map((g) => g.name);
-      setGenres(genreNames);
-    };
-    initFetch();
-  }, []);
+  // useEffect(() => {
+  //   const initFetch = async () => {
+  //     const genre = await getGenres();
+  //     const genreNames = genre.map((g) => g.name);
+  //     setGenres(genreNames);
+  //   };
+  //   initFetch();
+  // }, []);
 
->>>>>>> Stashed changes
   return (
     <MainScreen title="Songs">
       {error && navigate('/login')}
@@ -51,7 +48,7 @@ const SongsPage = () => {
             </Button>
           </Row>
         )}
-<<<<<<< Updated upstream
+
       <Form.Control
         className="searchBox"
         type="text"
@@ -59,8 +56,6 @@ const SongsPage = () => {
         placeholder="Search For Song"
         onChange={(event) => setSearchText(event.target.value.toLowerCase())}
       />
-=======
-
       <Row>
         <Col lg={4} md={6} sm={12} xs={12}>
           <Form.Control
@@ -92,7 +87,7 @@ const SongsPage = () => {
             <option>{genres.map(g=> g.name)}</option>
             </Form.Select>
           </Dropdown.Toggle> */}
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          {/* <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Genre</Form.Label>
             <Form.Select
               value={genres.name}
@@ -113,7 +108,7 @@ const SongsPage = () => {
                     </option>
                   ))}
             </Form.Select>
-          </Form.Group>
+          </Form.Group> */}
         </Col>
 
         <Col lg={4} md={6} sm={12} xs={12}>
@@ -127,7 +122,6 @@ const SongsPage = () => {
         </Col>
       </Row>
 
->>>>>>> Stashed changes
       <Row>
         {
         songsInfo?.filter(songInfo => songInfo.name.toLowerCase().includes(searchText)).map((song, idx) => {

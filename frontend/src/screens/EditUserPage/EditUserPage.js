@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../actions/userAction";
@@ -8,40 +8,34 @@ import Loading from "../../components/Handlers/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import { USER_REGISTER_DONE } from "../../constants/userConstants";
 
-const RegisterPage = () => {
-  const [username, setUsername] = useState("");
+const EditUserPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
+  const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
 
   const [message, setMessage] = useState(null);
 
   const dispatch = useDispatch();
 
-  const userRegister = useSelector((state) => state.userRegister);
-  const { loading, error } = userRegister;
-  const userInfo = localStorage.getItem("userInfo");
+  const userGetter = useSelector((state) => state.getUser);
+  const { loading, error, userInfo } = userGetter;
   const navigate = useNavigate();
-  useEffect(() => {
-    if (userInfo) {
-      dispatch({ type: USER_REGISTER_DONE }); //Just to clean up Redux storage.
-      navigate("/");
-    }
-  }, [navigate, userInfo, dispatch]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
+    if (password !== 1) { //todo bycrpt pw and equals to pw
       setMessage("Passwords do not match");
     } else {
       setMessage(null);
-      dispatch(register(email, username, password));
+      dispatch(register(email, userInfo.username, password));
     }
   };
 
   return (
-    <MainScreen title="REGISTER">
-      <div className="registerContainer">
+    <MainScreen title="EDIT">
+      <div className="EditContainer">
         {error && (
           <ErrorMessage variant="danger" className="inputs">
             {error}
@@ -59,25 +53,49 @@ const RegisterPage = () => {
             <Form.Control
               className="inputs"
               type="text"
-              value={username}
+              value={userInfo.username}
+              disabled
               placeholder="Enter Name"
-              onChange={(e) => setUsername(e.target.value)}
             />
-          </Form.Group>
+          </Form.Group> 
+          {/* To put in outline */}
 
           <Form.Group className="mb-3" controlId="formEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
               className="inputs"
               type="email"
-              value={email}
+              value={userInfo.email}
+              disabled
               placeholder="Enter email"
               onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Group>
 
+          <Form.Group className="mb-3" controlId="formName">
+            <Form.Label>First name</Form.Label>
+            <Form.Control
+              className="inputs"
+              type="text"
+              value={userInfo.name}
+              placeholder="Enter first name"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formAge">
+            <Form.Label>Age</Form.Label>
+            <Form.Control
+              className="inputs"
+              type="number"
+              value={userInfo.age}
+              placeholder="Enter Age"
+              onChange={(e) => setAge(e.target.value)}
+            />
+          </Form.Group>
+
           <Form.Group className="mb-3" controlId="formPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Re-Enter your password</Form.Label>
             <Form.Control
               className="inputs"
               type="password"
@@ -87,19 +105,14 @@ const RegisterPage = () => {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formConfirmPassword">
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              className="inputs"
-              type="password"
-              value={confirmPassword}
-              placeholder="Confirm Password"
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </Form.Group>
+          <Form.Label>Choose Gender</Form.Label>
+          <InputGroup className="mb-3">
+            <Button variant="outline-secondary" value={gender} onClick={e => setGender(e.target.childNodes[0].data)}>Male</Button>
+            <Button variant="outline-secondary" value={gender} onClick={e => setGender(e.target.childNodes[0].data)}>Female</Button>
+          </InputGroup>
 
           <Button variant="primary" size="lg" type="submit">
-            REGISTER
+            EDIT
           </Button>
         </Form>
       </div>
@@ -107,4 +120,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default EditUserPage;
