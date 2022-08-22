@@ -11,6 +11,10 @@ import SongsPage from "./screens/SongsPage/SongsPage";
 import SongCreateEdit from "./screens/SongCreateEdit/SongCreateEdit";
 import ChatPage from "./screens/ChatPage/ChatPage";
 import DashboardPage from "./screens/Dashboard/DashboardPage";
+import MapPage from "./screens/MapPage/MapPage"
+
+
+
 
 const App = () => {
   return (
@@ -26,6 +30,8 @@ const App = () => {
         <Route path="/song/edit" element={<SongCreateEdit />} />
         <Route path="/song/edit/:id" element={<SongCreateEdit />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/MapPage" element={<MapPage />} />
+       
       </Routes>
       <Footer />
     </BrowserRouter>
