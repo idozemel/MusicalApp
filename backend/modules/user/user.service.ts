@@ -140,15 +140,17 @@ const getUserById = (id: string | JwtPayload | undefined) => {
 const getAllUsers = async (filters: any) => {
   try {
     const { text, gender, age } = filters;
+
     return await User.aggregate([
       {
         $match: {
           $and: [
-            { age: { $lt: age[1] } },
-            { age: { $gte: age[0] } },
+            { age: { $gte: Number(age[0]) } },
+            { age: { $lt: Number(age[1]) } },
             { gender: { $regex: gender, $options: "i" } },
           ],
           $or: [
+            { name: { $regex: text, $options: "i" } },
             { username: { $regex: text, $options: "i" } },
             { email: { $regex: text, $options: "i" } },
           ],

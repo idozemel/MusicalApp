@@ -1,39 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Badge, Button, Card, Form, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers, getUser } from "../../actions/userAction";
+import { getUser } from "../../actions/userAction";
 import ErrorMessage from "../../components/Handlers/ErrorMessage";
 import Loading from "../../components/Handlers/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
-import { deleteUser, isHeAdmin } from "../../services/userService";
+import { deleteUser } from "../../services/userService";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { getFilterUsers } from "../../actions/adminAction";
 
 const AdminPage = () => {
   const dispatch = useDispatch();
-  const usersList = useSelector((state) => state.getAllUsers);
-  const { loading, error, allUsers } = usersList;
+  const usersList = useSelector((state) => state.getFilterUsers);
+  const { loading, error, filterUsers } = usersList;
   const user = useSelector((state) => state.getUser);
   const { userInfo } = user;
-  const [isAdmin, setIsAdmin] = useState(false);
   const [userToDelete, setUserToDelete] = useState();
-
-  useEffect(() => {
-    isHeAdmin().then((isAdmin) => {
-      setIsAdmin(isAdmin);
-    });
-    if (!allUsers) dispatch(getAllUsers());
-    if (!userInfo) dispatch(getUser());
-  }, [dispatch, allUsers, isAdmin,userInfo]);
-
-  const [show, setShow] = useState(false);
-
   const [filters, setFilters] = useState({
     age: [14, 80],
     text: "",
     gender: "",
   });
+
+  useEffect(() => {
+    if (!filterUsers) dispatch(getFilterUsers(filters));
+    if (!userInfo) dispatch(getUser());
+  }, [userInfo, filterUsers, filters, dispatch]);
+
+  const [show, setShow] = useState(false);
+
   const handleClose = () => setShow(false);
   const handleShow = (user) => {
     setUserToDelete(user);
@@ -42,16 +38,12 @@ const AdminPage = () => {
 
   const deleteHandler = async () => {
     await deleteUser(userToDelete._id);
-    dispatch(getAllUsers());
+    dispatch(getFilterUsers(filters));
   };
-  // useEffect(() => {
-  //   console.log(filters);
-  // }, [filters]);
 
   const searchHandler = (e) => {
     e.preventDefault();
-    //console.log(filters);
-    dispatch(getFilterUsers(filters))
+    dispatch(getFilterUsers(filters));
   };
 
   return (
@@ -79,7 +71,7 @@ const AdminPage = () => {
       </Modal>
       {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
       {loading && <Loading />}
-      {allUsers && userInfo && (
+      {filterUsers && userInfo && (
         <Form
           className="d-flex justify-content-around align-items-center "
           onSubmit={searchHandler}
@@ -102,6 +94,7 @@ const AdminPage = () => {
             <Form.Label>Search</Form.Label>
             <Form.Control
               placeholder="Search"
+              value={filters.text}
               onChange={(ev) =>
                 setFilters((filters) => ({ ...filters, text: ev.target.value }))
               }
@@ -110,16 +103,17 @@ const AdminPage = () => {
           <Form.Group>
             <Form.Label>Gender</Form.Label>
             <Form.Select
+              value={filters.gender}
               onChange={(ev) =>
                 setFilters((filters) => ({
                   ...filters,
-                  gender: ev.target.value,
+                  gender: ev.target.value || "",
                 }))
               }
             >
-              <option value="">Male/Female</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
+              <option value="">All</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
             </Form.Select>
           </Form.Group>
           <Button className="mt-4" variant="primary" size="lg" type="submit">
@@ -127,9 +121,9 @@ const AdminPage = () => {
           </Button>
         </Form>
       )}
-      {allUsers &&
+      {filterUsers &&
         userInfo &&
-        allUsers
+        filterUsers
           ?.filter((user) => user._id !== userInfo._id)
           .map((user) => {
             return (
