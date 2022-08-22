@@ -137,9 +137,24 @@ const getUserById = (id: string | JwtPayload | undefined) => {
 };
 
 //Get All Users
-const getAllUsers = () => {
+const getAllUsers = async (filters: any) => {
   try {
-    return User.find();
+    const { text, gender, age } = filters;
+    return await User.aggregate([
+      {
+        $match: {
+          $and: [
+            { age: { $lt: age[0] } },
+            { age: { $gte: age[1] } },
+            { gender: { $regex: gender, $options: "i" } },
+          ],
+          $or: [
+            { username: { $regex: text, $options: "i" } },
+            { email: { $regex: text, $options: "i" } },
+          ],
+        },
+      },
+    ]);
   } catch {
     throw new ServerError();
   }

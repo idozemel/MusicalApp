@@ -35,7 +35,8 @@ const login: RequestHandler = async (req, res, next) => {
 
 const getAllUsers: RequestHandler = async (req, res) => {
   try {
-    const users = await userService.getAllUsers();
+    const { text, gender, age } = req.query;
+    const users = await userService.getAllUsers({text, gender, age});
     res.json(users);
   } catch (err) {
     if (err instanceof ServerError) res.status(err.code);

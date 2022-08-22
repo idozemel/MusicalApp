@@ -16,7 +16,7 @@ usersRouter.put("/:id", authenticateJWT, updateUser);
 usersRouter.delete("/:id", authenticateJWT, requireAdmin, deleteUser);
 
 //GET all users
-usersRouter.get("/all", authenticateJWT, getAllUsers);
+usersRouter.get("/all", authenticateJWT, requireAdmin, getAllUsers);
 
 //GET user by id
 usersRouter.get("/", authenticateJWT, getUser);
