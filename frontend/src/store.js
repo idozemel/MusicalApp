@@ -9,6 +9,7 @@ const reducer = combineReducers({
     getAllSongs: allSongsReducer,
     getUser: getUserReducer,
     getAllUsers: getAllUsersReducer,
+    getFilterUsers: getAllUsersReducer,
 });
 
 const initialState = {};

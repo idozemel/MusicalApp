@@ -29,7 +29,7 @@ const AdminPage = () => {
   const [show, setShow] = useState(false);
 
   const [filters, setFilters] = useState({
-    age: [8, 70],
+    age: [14, 80],
     text: "",
     gender: "",
   });
@@ -46,6 +46,11 @@ const AdminPage = () => {
   // useEffect(() => {
   //   console.log(filters);
   // }, [filters]);
+
+  const searchHandler = (e) => {
+    e.preventDefault();
+    console.log(filters);
+  };
 
   return (
     <MainScreen title="Hello Admin">
@@ -73,20 +78,25 @@ const AdminPage = () => {
       {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
       {loading && <Loading />}
       {allUsers && userInfo && (
-        <Form className="d-flex justify-content-around align-items-center ">
+        <Form
+          className="d-flex justify-content-around align-items-center "
+          onSubmit={searchHandler}
+        >
           <Form.Group className="w-25">
-            <Form.Label>Age</Form.Label>
+            <Form.Label>
+              Age {filters.age[0]} - {filters.age[1]}
+            </Form.Label>
             <Slider
               draggableTrack
               range
-              min={1}
+              min={14}
               max={80}
               defaultValue={filters.age}
               value={filters.age}
               onChange={(age) => setFilters((filters) => ({ ...filters, age }))}
             />
           </Form.Group>
-          <Form.Group >
+          <Form.Group>
             <Form.Label>Search</Form.Label>
             <Form.Control
               placeholder="Search"
@@ -98,15 +108,21 @@ const AdminPage = () => {
           <Form.Group>
             <Form.Label>Gender</Form.Label>
             <Form.Select
-              onChange={(gender) =>
-                setFilters((filters) => ({ ...filters, gender }))
+              onChange={(ev) =>
+                setFilters((filters) => ({
+                  ...filters,
+                  gender: ev.target.value,
+                }))
               }
             >
-              <option value="">All</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value="">Male/Female</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
             </Form.Select>
           </Form.Group>
+          <Button className="mt-4" variant="primary" size="lg" type="submit">
+            Submit
+          </Button>
         </Form>
       )}
       {allUsers &&
@@ -145,12 +161,13 @@ const AdminPage = () => {
                   <Accordion.Body>
                     <Card.Body>
                       <h4>
-                        <Badge pill bg="success">
-                          Username - {user.username}
-                        </Badge>
+                        <Badge bg="success">Username - {user.username}</Badge>
                       </h4>
                       <blockquote className="blockquote mb-0">
+                        <p>{user.name}</p>
                         <p>{user.email}</p>
+                        <p>{user.age}</p>
+                        <p>{user.gender}</p>
                         <footer>
                           Admin -{" "}
                           <strong>

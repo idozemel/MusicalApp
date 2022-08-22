@@ -45,7 +45,7 @@ const RegisterPage = () => {
     }
     else {
       setMessage(null);
-      dispatch(register(email, username, password)); //Need to add gender age and first name here, also on the action.
+      dispatch(register(email, username, password,gender,age,name)); //Need to add gender age and first name here, also on the action.
     }
   };
 

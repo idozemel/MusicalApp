@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import ErrorMessage from "../../components/Handlers/ErrorMessage";
 import Loading from "../../components/Handlers/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import { getAllSong } from "../../actions/songAction";
@@ -49,8 +48,7 @@ const SongsPage = () => {
       />
       <Row>
         {
-        songsInfo?.filter(songInfo => songInfo.name.toLowerCase().includes(searchText)).
-        map((song, idx) => {
+        songsInfo?.filter(songInfo => songInfo.name.toLowerCase().includes(searchText)).map((song, idx) => {
           return (
             <Col xs="3" key={idx}>
               <Card
