@@ -23,6 +23,18 @@ const SongsPage = () => {
     }
   }, [dispatch, songsInfo, isAdmin]);
 
+<<<<<<< Updated upstream
+=======
+  useEffect(() => {
+    const initFetch = async () => {
+      const genre = await getGenres();
+      const genreNames = genre.map((g) => g.name);
+      setGenres(genreNames);
+    };
+    initFetch();
+  }, []);
+
+>>>>>>> Stashed changes
   return (
     <MainScreen title="Songs">
       {error && navigate('/login')}
