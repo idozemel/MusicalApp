@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Container,
   Form,
@@ -6,21 +6,15 @@ import {
   Navbar,
   NavDropdown,
 } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { getUser, logout } from "../../actions/userAction";
+import { logout } from "../../actions/userAction";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const userInfo = localStorage.getItem("userInfo");
 
-  useEffect(() => {
-    if (!userInfo) {
-      dispatch(getUser());
-    }
-  }, [dispatch, userInfo]);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -44,7 +38,7 @@ const Header = () => {
                 {" "}
                 My Songs
               </Nav.Link>
-              <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
+              <NavDropdown id="basic-nav-dropdown">
                 <NavDropdown.Item as={Link} to="/myProfile">
                   My Profile
                 </NavDropdown.Item>
