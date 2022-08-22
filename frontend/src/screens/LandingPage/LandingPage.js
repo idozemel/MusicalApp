@@ -1,12 +1,9 @@
 import React from "react";
 import { Button, Container, Row } from "react-bootstrap";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./LandingPage.css";
 const LandingPage = () => {
-  const userGetter = useSelector((state) => state.getUser);
-  const { userInfo } = userGetter;
-
+  const userInfo = localStorage.getItem("userInfo");
   return (
     <div className="main">
       <Container>
@@ -14,7 +11,7 @@ const LandingPage = () => {
           <div className="intro-text">
             <div>
               {!userInfo && <h1 className="title">Welcome to Musica-App</h1>}
-              {userInfo && <h1 className="title">Welcome back {userInfo.username} to Musica-App</h1>}
+              {userInfo && <h1 className="title">Welcome back to Musica-App</h1>}
               {!userInfo && <h3>Please log in to view all the songs :)</h3>}
               <div className="buttonContainer">
                 {userInfo && (

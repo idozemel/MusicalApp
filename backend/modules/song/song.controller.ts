@@ -36,4 +36,14 @@ const saveSong: RequestHandler = async (req, res, next) => {
   }
 };
 
-export { getSongs, saveSong, getSong };
+const deleteSong: RequestHandler = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (id) await songService.deleteSong(id);
+    res.json();
+  } catch (err) {
+    if (err instanceof ServerError) res.status(err.code);
+    res.json(err);
+  }
+};
+export { getSongs, saveSong, getSong, deleteSong };

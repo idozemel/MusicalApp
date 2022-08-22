@@ -11,3 +11,11 @@ export const isHeAdmin = async () => {
   } catch {}
 };
 
+export const deleteUser = async (id) => {
+  try {
+    await axios.delete(
+      `http://localhost:3030/api/user/${id}`,
+      configWithToken(localStorage.getItem("userInfo"))
+    );
+  } catch {}
+};

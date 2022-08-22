@@ -1,26 +1,13 @@
-import React, { useEffect } from "react";
-import {
-  Container,
-  Form,
-  Nav,
-  Navbar,
-  NavDropdown,
-} from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { Container, Form, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { getUser, logout } from "../../actions/userAction";
+import { logout } from "../../actions/userAction";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-
-  useEffect(() => {
-    if (!userInfo) {
-      dispatch(getUser());
-    }
-  }, [dispatch, userInfo]);
+  const userInfo = localStorage.getItem("userInfo");
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -31,7 +18,7 @@ const Header = () => {
     <Navbar bg="dark" expand="lg" variant="dark">
       <Container>
         <Navbar.Brand>
-          <Link to="/">Musical-App</Link>
+          <Link to="/">MusicApp</Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -40,19 +27,10 @@ const Header = () => {
           </Nav>
           {userInfo && (
             <Nav>
-              <Nav.Link as={Link} to="mysongs">
-                {" "}
-                My Songs
+              <Nav.Link as={Link} to="/myProfile">
+                My Profile
               </Nav.Link>
-              <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
-                <NavDropdown.Item as={Link} to="/myProfile">
-                  My Profile
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={logoutHandler}>
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
+              <Nav.Link onClick={logoutHandler}>Logout</Nav.Link>
             </Nav>
           )}
           {!userInfo && (

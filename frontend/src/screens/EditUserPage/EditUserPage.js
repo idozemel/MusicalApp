@@ -8,50 +8,34 @@ import Loading from "../../components/Handlers/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import { USER_REGISTER_DONE } from "../../constants/userConstants";
 
-const RegisterPage = () => {
-  const [username, setUsername] = useState("");
+const EditUserPage = () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [message, setMessage] = useState(null);
 
   const dispatch = useDispatch();
 
-  const userRegister = useSelector((state) => state.userRegister);
-  const { loading, error } = userRegister;
-  const userInfo = localStorage.getItem("userInfo");
+  const userGetter = useSelector((state) => state.getUser);
+  const { loading, error, userInfo } = userGetter;
   const navigate = useNavigate();
-  useEffect(() => {
-    if (userInfo) {
-      dispatch({ type: USER_REGISTER_DONE }); //Just to clean up Redux storage.
-      navigate("/");
-    }
-  }, [navigate, userInfo, dispatch]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
+    if (password !== 1) { //todo bycrpt pw and equals to pw
       setMessage("Passwords do not match");
-    }
-    else if(gender.length < 3){
-      setMessage("Choose a gender");
-    }
-    else if(age < 13){
-      setMessage("You must be over 14 to register");
-    }
-    else {
+    } else {
       setMessage(null);
-      dispatch(register(email, username, password,gender,age,name)); //Need to add gender age and first name here, also on the action.
+      dispatch(register(email, userInfo.username, password));
     }
   };
 
   return (
-    <MainScreen title="REGISTER">
-      <div className="registerContainer">
+    <MainScreen title="EDIT">
+      <div className="EditContainer">
         {error && (
           <ErrorMessage variant="danger" className="inputs">
             {error}
@@ -64,23 +48,25 @@ const RegisterPage = () => {
         )}
         {loading && <Loading />}
         <Form onSubmit={submitHandler}>
-          <Form.Group className="mb-3" controlId="formUsername">
+          <Form.Group className="mb-3" controlId="formName">
             <Form.Label>Username</Form.Label>
             <Form.Control
               className="inputs"
               type="text"
-              value={username}
-              placeholder="Enter Username"
-              onChange={(e) => setUsername(e.target.value)}
+              value={userInfo.username}
+              disabled
+              placeholder="Enter Name"
             />
-          </Form.Group>
+          </Form.Group> 
+          {/* To put in outline */}
 
           <Form.Group className="mb-3" controlId="formEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
               className="inputs"
               type="email"
-              value={email}
+              value={userInfo.email}
+              disabled
               placeholder="Enter email"
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -91,7 +77,7 @@ const RegisterPage = () => {
             <Form.Control
               className="inputs"
               type="text"
-              value={name}
+              value={userInfo.name}
               placeholder="Enter first name"
               onChange={(e) => setName(e.target.value)}
             />
@@ -102,31 +88,20 @@ const RegisterPage = () => {
             <Form.Control
               className="inputs"
               type="number"
-              value={age}
+              value={userInfo.age}
               placeholder="Enter Age"
               onChange={(e) => setAge(e.target.value)}
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Re-Enter your password</Form.Label>
             <Form.Control
               className="inputs"
               type="password"
               value={password}
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formConfirmPassword">
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              className="inputs"
-              type="password"
-              value={confirmPassword}
-              placeholder="Confirm Password"
-              onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </Form.Group>
 
@@ -137,7 +112,7 @@ const RegisterPage = () => {
           </InputGroup>
 
           <Button variant="primary" size="lg" type="submit">
-            REGISTER
+            EDIT
           </Button>
         </Form>
       </div>
@@ -145,4 +120,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default EditUserPage;

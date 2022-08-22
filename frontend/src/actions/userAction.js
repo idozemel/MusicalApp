@@ -1,5 +1,8 @@
 import axios from "axios";
 import {
+  GET_ALL_USERS_FAIL,
+  GET_ALL_USERS_REQUEST,
+  GET_ALL_USERS_SUCCESS,
   GET_USER_FAIL,
   GET_USER_LOGOUT,
   GET_USER_REQUEST,
@@ -47,11 +50,12 @@ export const login = (username, password) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   localStorage.removeItem("userInfo");
+  localStorage.removeItem("songsInfo");
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: GET_USER_LOGOUT });
 };
 
-export const register = (email, username, password) => async (dispatch) => {
+export const register = (email, username, password, gender, age, name) => async (dispatch) => {
   try {
     dispatch({ type: USER_REGISTER_REQUEST });
 
@@ -61,6 +65,9 @@ export const register = (email, username, password) => async (dispatch) => {
         email,
         username,
         password,
+        gender,
+        age,
+        name,
       },
       config
     );
@@ -98,3 +105,24 @@ export const getUser = () => async (dispatch) => {
     });
   }
 };
+
+
+export const getAllUsers = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_ALL_USERS_REQUEST });
+
+    const { data } = await axios.get(
+      "http://localhost:3030/api/user/all",
+      configWithToken(localStorage.getItem("userInfo"))
+    );
+    dispatch({ type: GET_ALL_USERS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_ALL_USERS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}

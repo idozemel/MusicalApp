@@ -56,8 +56,12 @@ const SongCreateEdit = () => {
       <MainScreen title="Song">
         <Form
           onSubmit={(ev) => {
+            let songToSend;
             ev.preventDefault();
-            saveSong(id, song).then(() => {
+            if (!song?.genre?.name)
+              songToSend = { ...song, genre: { name: "Pop" } };
+            else songToSend = { ...song };
+            saveSong(id, songToSend).then(() => {
               navigate("/songs");
               dispatch(getAllSong());
             });
@@ -134,7 +138,9 @@ const SongCreateEdit = () => {
           </Form.Group>
           <div style={{ display: "flex" }}>
             <span style={{ alignSelf: "center", flex: "1" }}>
-              <Button variant="primary" type="submit">Submit</Button>
+              <Button variant="primary" type="submit">
+                Submit
+              </Button>
             </span>
             <Button
               className="mx-2"

@@ -124,9 +124,25 @@ const editSong = async (_id: string, song: ISong) => {
 const getSongByName = async (name: string) => {
   return await Song.findOne({ name });
 };
+const deleteSong = async (_id: string) => {
+  try {
+    const song = await Song.findByIdAndDelete(_id);
+    await Artist.findOneAndUpdate(
+      { _id: song?.artist },
+      { $pull: { songs: _id } }
+    );
+    await Genre.findOneAndUpdate(
+      { _id: song?.genre },
+      { $pull: { songs: _id } }
+    );
+  } catch {
+    throw new ServerError();
+  }
+};
 
 export const songService = {
   addSongs,
+  deleteSong,
   addSong,
   getSongs,
   editSong,
