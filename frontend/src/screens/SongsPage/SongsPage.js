@@ -39,6 +39,7 @@ const SongsPage = () => {
             </Button>
           </Row>
         )}
+<<<<<<< Updated upstream
       <Form.Control
         className="searchBox"
         type="text"
@@ -46,6 +47,75 @@ const SongsPage = () => {
         placeholder="Search For Song"
         onChange={(event) => setSearchText(event.target.value.toLowerCase())}
       />
+=======
+
+      <Row>
+        <Col lg={4} md={6} sm={12} xs={12}>
+          <Form.Control
+            className="searchBox"
+            type="text"
+            id="songSearch"
+            placeholder="Search For Song"
+            onChange={(event) => setSearchText(event.target.value.toLowerCase())}
+          />
+        </Col>
+        <Col lg={4} md={6} sm={12} xs={12}>
+          <Form.Control
+            className="searchBox"
+            type="text"
+            id="artistSearch"
+            placeholder="Search For Artist"
+            onChange={(event) => setSearchText(event.target.value.toLowerCase())}
+          />
+        </Col>
+
+        <Col lg={4} md={6} sm={12} xs={12}>
+          {/* <Dropdown.Toggle variant="primary" id="dropdown-basic"> */}
+          {/* <Form.Label>Genre</Form.Label>
+            <Form.Select
+              // value={genres.name}
+              name="name"
+              aria-label="Genre"
+            >
+            <option>{genres.map(g=> g.name)}</option>
+            </Form.Select>
+          </Dropdown.Toggle> */}
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Genre</Form.Label>
+            <Form.Select
+              value={genres.name}
+              name="name"
+              aria-label="Genre"
+            >
+              {genres?.name && (
+                <option key={genres.name} value={genres.name}>
+                  {genres.name}
+                </option>
+              )}
+              {genres &&
+                genres
+                  .filter((g) => g !== genres.name)
+                  .map((g) => (
+                    <option key={g} value={g}>
+                      {g}
+                    </option>
+                  ))}
+            </Form.Select>
+          </Form.Group>
+        </Col>
+
+        <Col lg={4} md={6} sm={12} xs={12}>
+          <Button
+              size="md"
+              variant="primary"
+              // onClick={() => window.open(song.link)}
+            >
+              Sumbit
+          </Button>
+        </Col>
+      </Row>
+
+>>>>>>> Stashed changes
       <Row>
         {
         songsInfo?.filter(songInfo => songInfo.name.toLowerCase().includes(searchText)).map((song, idx) => {
