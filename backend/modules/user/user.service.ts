@@ -106,7 +106,7 @@ const getUser = (username: string, password: string) => {
               { user: { ...user.toObject(), password: null } },
               configConstants.jwtSecret,
               {
-                expiresIn: "1h",
+                expiresIn: "7d",
               },
               function (err, token) {
                 if (err) {
