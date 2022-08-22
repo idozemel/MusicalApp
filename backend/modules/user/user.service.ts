@@ -144,8 +144,8 @@ const getAllUsers = async (filters: any) => {
       {
         $match: {
           $and: [
-            { age: { $lt: age[0] } },
-            { age: { $gte: age[1] } },
+            { age: { $lt: age[1] } },
+            { age: { $gte: age[0] } },
             { gender: { $regex: gender, $options: "i" } },
           ],
           $or: [
