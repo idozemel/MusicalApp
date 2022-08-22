@@ -8,6 +8,7 @@ import MainScreen from "../../components/MainScreen/MainScreen";
 import { deleteUser, isHeAdmin } from "../../services/userService";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { getFilterUsers } from "../../actions/adminAction";
 
 const AdminPage = () => {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ const AdminPage = () => {
     });
     if (!allUsers) dispatch(getAllUsers());
     if (!userInfo) dispatch(getUser());
-  }, [dispatch, allUsers, isAdmin]);
+  }, [dispatch, allUsers, isAdmin,userInfo]);
 
   const [show, setShow] = useState(false);
 
@@ -49,7 +50,8 @@ const AdminPage = () => {
 
   const searchHandler = (e) => {
     e.preventDefault();
-    console.log(filters);
+    //console.log(filters);
+    dispatch(getFilterUsers(filters))
   };
 
   return (

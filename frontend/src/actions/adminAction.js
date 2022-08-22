@@ -10,7 +10,7 @@ export const getFilterUsers = (filters) => async (dispatch) => {
         "http://localhost:3030/api/user/all",
         {
             age,
-            name,
+            name,   
             gender,
           },
         configWithToken(localStorage.getItem("userInfo"))
