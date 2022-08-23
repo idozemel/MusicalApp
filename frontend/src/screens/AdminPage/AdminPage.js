@@ -9,7 +9,7 @@ import { deleteUser } from "../../services/userService";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { getFilterUsers } from "../../actions/adminAction";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const AdminPage = () => {
   const dispatch = useDispatch();

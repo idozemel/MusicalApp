@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getAllSong } from "../../actions/songAction";
+import { getAllSong, songDelete } from "../../actions/songAction";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import { getGenres, getSongById, saveSong } from "../../services/songService";
 
@@ -51,6 +51,11 @@ const SongCreateEdit = () => {
     navigate("/songs");
   };
 
+  const deleteHandler = () => {
+    dispatch(songDelete(song._id));
+    dispatch(getAllSong());
+    navigate("/songs");
+  };
   return (
     song && (
       <MainScreen title="Song">
@@ -149,6 +154,14 @@ const SongCreateEdit = () => {
               onClick={goBackHandler}
             >
               Back
+            </Button>
+            <Button
+              className="mx-2"
+              variant="light"
+              size="md"
+              onClick={deleteHandler}
+            >
+              Delete
             </Button>
           </div>
         </Form>
