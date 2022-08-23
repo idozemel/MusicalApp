@@ -7,6 +7,7 @@ import { getAllSong } from "../../actions/songAction";
 import { useNavigate } from "react-router-dom";
 import { isHeAdmin } from "../../services/userService";
 import "./SongsPage.css";
+import Select from "react-select";
 import { getGenres } from "../../services/songService";
 const SongsPage = () => {
   const dispatch = useDispatch();
@@ -38,7 +39,6 @@ const SongsPage = () => {
     initFetch();
   }, []);
 
-  useEffect(() => console.log(filters), [filters]);
 
   return (
     <MainScreen title="Songs">
@@ -57,87 +57,74 @@ const SongsPage = () => {
           </Row>
         )}
 
-        <Row>
-          <Col lg={4} md={6} sm={12} xs={12}>
-            <Form.Group className="mb-3">
-              <Form.Label>Song</Form.Label>
-              <Form.Control
-                className="searchBox"
-                type="text"
-                id="songSearch"
-                value={filters.songText}
-                placeholder="Search For Song"
-                onChange={(event) =>
-                  setFilters((filters) => ({
-                    ...filters,
-                    songText: event.target.value,
-                  }))
-                }
-              />
-            </Form.Group>
-          </Col>
-          <Col lg={4} md={6} sm={12} xs={12}>
-            <Form.Group className="mb-3">
-              <Form.Label>Artist</Form.Label>
-              <Form.Control
-                className="searchBox"
-                type="text"
-                id="artistSearch"
-                placeholder="Search For Artist"
-                onChange={(event) =>
-                  setFilters((filters) => ({
-                    ...filters,
-                    artistText: event.target.value,
-                  }))
-                }
-              />
-            </Form.Group>
-          </Col>
+        <Form
+          onSubmit={(ev) => {
+            ev.preventDefault();
+            console.log(filters);
+          }}
+        >
+          <Row>
+            <Col lg={4} md={6} sm={12} xs={12}>
+              <Form.Group className="mb-3">
+                <Form.Label>Song</Form.Label>
+                <Form.Control
+                  className="searchBox"
+                  type="text"
+                  id="songSearch"
+                  value={filters.songText}
+                  placeholder="Search For Song"
+                  onChange={(event) =>
+                    setFilters((filters) => ({
+                      ...filters,
+                      songText: event.target.value,
+                    }))
+                  }
+                />
+              </Form.Group>
+            </Col>
+            <Col lg={4} md={6} sm={12} xs={12}>
+              <Form.Group className="mb-3">
+                <Form.Label>Artist</Form.Label>
+                <Form.Control
+                  className="searchBox"
+                  type="text"
+                  id="artistSearch"
+                  placeholder="Search For Artist"
+                  onChange={(event) =>
+                    setFilters((filters) => ({
+                      ...filters,
+                      artistText: event.target.value,
+                    }))
+                  }
+                />
+              </Form.Group>
+            </Col>
 
-          <Col lg={4} md={6} sm={12} xs={12}>
-            <Form.Group className="mb-3">
-              <Form.Label>Genre</Form.Label>
-              <Form.Select
-                multiple
-                name="name"
-                value={filters.genres}
-                aria-label="Genre"
-                onChange={(event) =>
-                  setFilters((filters) => {
-                    const genre = event.target.value;
-                    if (filters.genres.includes(genre))
-                      return {
-                        ...filters,
-                        genres: filters.genres.filter((g) => g === genre),
-                      };
-                    else
-                      return {
-                        ...filters,
-                        genres: [...filters.genres, genre],
-                      };
-                  })
-                }
-              >
-                {genres && genres.length > 0 && (
-                  <option key={genres.name} value={genres.name}>
-                    {genres.name}
-                  </option>
-                )}
-                {genres &&
-                  genres
-                    .filter((g) => g !== genres.name)
-                    .map((g) => (
-                      <option key={g} value={g}>
-                        {g}
-                      </option>
-                    ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-          <Button size="md" className="mb-4" variant="secondary">
-            Submit
-          </Button>
-        </Row>
+            <Col lg={4} md={6} sm={12} xs={12}>
+              <Form.Group className="mb-3">
+                <Form.Label>Genre</Form.Label>
+                <Select
+                  onChange={(genres) =>
+                    setFilters((filters) => ({
+                      ...filters,
+                      genres,
+                    }))
+                  }
+                  isMulti
+                  options={genres.map((g) => ({ value: g, label: g }))}
+                />
+              </Form.Group>
+            </Col>
+            <Button
+              type="submit"
+              size="md"
+              className="mb-4"
+              variant="secondary"
+            >
+              Submit
+            </Button>
+          </Row>
+        </Form>
 
         <Row>
           {songsInfo &&
