@@ -4,7 +4,10 @@ import { songService } from "./song.service";
 
 const getSongs: RequestHandler = async (req, res, next) => {
   try {
-    const songs = await songService.getSongs();
+    const filters = req.query;
+    console.log(filters);
+
+    const songs = await songService.getSongs(filters);
     res.json(songs);
   } catch (err) {
     if (err instanceof ServerError) res.status(err.code);

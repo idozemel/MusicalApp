@@ -25,20 +25,17 @@ const SongsPage = () => {
     isHeAdmin().then((isAdmin) => {
       setIsAdmin(isAdmin);
     });
-    if (!songsInfo) {
-      dispatch(getAllSong());
-    }
-  }, [dispatch, songsInfo, isAdmin]);
+  }, [dispatch, isAdmin]);
 
   useEffect(() => {
     const initFetch = async () => {
-      const genre = await getGenres();
-      const genreNames = genre.map((g) => g.name);
+      const genres = await getGenres();
+      const genreNames = genres.map((g) => g.name);
+      dispatch(getAllSong({ ...filters, genres: genreNames }));
       setGenres(genreNames);
     };
     initFetch();
   }, []);
-
 
   return (
     <MainScreen title="Songs">
@@ -60,7 +57,10 @@ const SongsPage = () => {
         <Form
           onSubmit={(ev) => {
             ev.preventDefault();
-            console.log(filters);
+            let filtersToSend = { ...filters };
+            if (filters.genres.length === 0)
+              filtersToSend = { ...filters, genres };
+            dispatch(getAllSong(filtersToSend));
           }}
         >
           <Row>
@@ -104,12 +104,13 @@ const SongsPage = () => {
               <Form.Group className="mb-3">
                 <Form.Label>Genre</Form.Label>
                 <Select
-                  onChange={(genres) =>
+                  onChange={(value) => {
+                    const genres = value.map((g) => g.value);
                     setFilters((filters) => ({
                       ...filters,
                       genres,
-                    }))
-                  }
+                    }));
+                  }}
                   isMulti
                   options={genres.map((g) => ({ value: g, label: g }))}
                 />

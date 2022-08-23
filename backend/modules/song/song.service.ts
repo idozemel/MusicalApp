@@ -13,11 +13,73 @@ const addSongs = async (songs: ISong[]) => {
   } catch (err) {}
 };
 
-const getSongs = async () => {
+const getSongs = async (filters: any) => {
+  const { songText, genres, artistText } = filters;
+  console.log();
+
   try {
-    return await Song.find()
-      .populate("artist", "name link")
-      .populate("genre", "name");
+    const songs = await Song.aggregate([
+      {
+        $lookup: {
+          from: "genres",
+          localField: "genre",
+          foreignField: "_id",
+          pipeline: [
+            {
+              $project: {
+                songs: 0,
+              },
+            },
+          ],
+          as: "genre",
+        },
+      },
+      {
+        $lookup: {
+          from: "artists",
+          localField: "artist",
+          foreignField: "_id",
+          pipeline: [
+            {
+              $project: {
+                songs: 0,
+              },
+            },
+          ],
+          as: "artist",
+        },
+      },
+      {
+        $unwind: "$genre",
+      },
+      {
+        $unwind: "$artist",
+      },
+      {
+        $match: {
+          $and: [
+            {
+              "genre.name": {
+                $in: genres,
+              },
+            },
+            {
+              "artist.name": {
+                $regex: artistText,
+                $options: "i",
+              },
+            },
+            {
+              name: {
+                $regex: songText,
+                $options: "i",
+              },
+            },
+          ],
+        },
+      },
+    ]);
+    return songs;
   } catch {
     throw new ServerError();
   }
