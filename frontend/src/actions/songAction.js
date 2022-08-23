@@ -9,13 +9,14 @@ import {
 } from "../constants/songConstant";
 import { configWithToken } from "./configWithToken";
 
-export const getAllSong = () => async (dispatch) => {
+export const getAllSong = (filters) => async (dispatch) => {
   try {
+    const config = configWithToken(localStorage.getItem("userInfo"));
     dispatch({ type: ALL_SONGS_REQUEST });
-    const { data } = await axios.get(
-      "http://localhost:3030/api/song/",
-      configWithToken(localStorage.getItem("userInfo"))
-    );
+    const { data } = await axios.get("http://localhost:3030/api/song/", {
+      params: filters,
+      ...config,
+    });
 
     dispatch({ type: ALL_SONGS_SUCCESS, payload: data });
 
