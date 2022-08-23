@@ -19,3 +19,25 @@ export const deleteUser = async (id) => {
     );
   } catch {}
 };
+
+export const checkPassword = async (username, password) => {
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+  try {
+    const { data } = await axios.post(
+      "http://localhost:3030/api/user/login",
+      {
+        username,
+        password,
+      },
+      config
+    );
+    if (data) return true;
+    else return false;
+  } catch {
+    return false;
+  }
+};
