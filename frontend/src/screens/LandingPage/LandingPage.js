@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Container, Row } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { getUser } from "../../actions/userAction";
 import "./LandingPage.css";
 const LandingPage = () => {
   const userInfo = localStorage.getItem("userInfo");
+
   return (
     <div className="main">
       <Container>

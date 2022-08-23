@@ -2,35 +2,40 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { register } from "../../actions/userAction";
+import { getUser, login, logout, userEdit} from '../../actions/userAction';
 import ErrorMessage from "../../components/Handlers/ErrorMessage";
 import Loading from "../../components/Handlers/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
-import { USER_REGISTER_DONE } from "../../constants/userConstants";
-
 const EditUserPage = () => {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
 
-  const [message, setMessage] = useState(null);
-
   const dispatch = useDispatch();
+
 
   const userGetter = useSelector((state) => state.getUser);
   const { loading, error, userInfo } = userGetter;
+
+  const updateUser = useSelector((state)=> state.editUser)
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(userInfo){
+      setName(userInfo.name);
+      setAge(userInfo.age);
+      setGender(userInfo.gender);
+    }
+  },[userInfo])
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (password !== 1) { //todo bycrpt pw and equals to pw
-      setMessage("Passwords do not match");
-    } else {
-      setMessage(null);
-      dispatch(register(email, userInfo.username, password));
-    }
+    dispatch(userEdit(userInfo._id,password,name,gender,age));
+    dispatch(login(userInfo.username,password));
+    window.alert("Profile has been updated");
+
+    navigate('/myprofile');
   };
 
   return (
@@ -41,14 +46,9 @@ const EditUserPage = () => {
             {error}
           </ErrorMessage>
         )}
-        {message && (
-          <ErrorMessage variant="danger" className="inputs">
-            {message}
-          </ErrorMessage>
-        )}
         {loading && <Loading />}
         <Form onSubmit={submitHandler}>
-          <Form.Group className="mb-3" controlId="formName">
+          <Form.Group className="mb-3" controlId="formUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control
               className="inputs"
@@ -58,7 +58,6 @@ const EditUserPage = () => {
               placeholder="Enter Name"
             />
           </Form.Group> 
-          {/* To put in outline */}
 
           <Form.Group className="mb-3" controlId="formEmail">
             <Form.Label>Email address</Form.Label>
@@ -68,7 +67,6 @@ const EditUserPage = () => {
               value={userInfo.email}
               disabled
               placeholder="Enter email"
-              onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Group>
 
@@ -77,7 +75,7 @@ const EditUserPage = () => {
             <Form.Control
               className="inputs"
               type="text"
-              value={userInfo.name}
+              value={name}
               placeholder="Enter first name"
               onChange={(e) => setName(e.target.value)}
             />
@@ -88,7 +86,7 @@ const EditUserPage = () => {
             <Form.Control
               className="inputs"
               type="number"
-              value={userInfo.age}
+              value={age}
               placeholder="Enter Age"
               onChange={(e) => setAge(e.target.value)}
             />

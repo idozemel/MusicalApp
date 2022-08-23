@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { register } from "../../actions/userAction";
+import { getUser, register } from "../../actions/userAction";
 import ErrorMessage from "../../components/Handlers/ErrorMessage";
 import Loading from "../../components/Handlers/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
@@ -28,9 +28,12 @@ const RegisterPage = () => {
   useEffect(() => {
     if (userInfo) {
       dispatch({ type: USER_REGISTER_DONE }); //Just to clean up Redux storage.
+      dispatch(getUser());
       navigate("/");
     }
   }, [navigate, userInfo, dispatch]);
+
+
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -45,7 +48,7 @@ const RegisterPage = () => {
     }
     else {
       setMessage(null);
-      dispatch(register(email, username, password,gender,age,name)); //Need to add gender age and first name here, also on the action.
+      dispatch(register(email, username, password,gender,age,name));
     }
   };
 
