@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import axios from "axios";
@@ -6,7 +6,6 @@ import "./Dashborad.css";
 import { useState, useEffect } from "react";
 import { configWithToken } from "../../actions/configWithToken";
 import Loading from "../../components/Handlers/Loading";
-import { Container } from "react-bootstrap";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -45,7 +44,7 @@ const DashboardPage = () => {
       )
       .then(({ data }) => {
         data?.map((genre) => {
-          setData((data) => ({
+          return setData((data) => ({
             ...data,
             labels: [...data.labels, genre._id],
             datasets: [
@@ -64,7 +63,6 @@ const DashboardPage = () => {
       data={data}
       options={{
         plugins: {
-        
           legend: {
             position: "top",
 

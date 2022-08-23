@@ -11,21 +11,17 @@ const MyProfilePage = () => {
   const { userInfo } = user;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const updateUser = useSelector((state)=> state.editUser)
-  const {success, userEdit:editInfo} = updateUser;
 
   useEffect(() => {
-    if (!userInfo) {
-      dispatch(getUser());
-    }
-  }, [dispatch, userInfo,success]);
+    if (!userInfo) dispatch(getUser());
+  }, [dispatch, userInfo]);
 
   const deleteHandler = () => {
     if (window.confirm("Are you sure?")) {
       dispatch(userDelete(userInfo._id));
       navigate("/");
     }
-  }
+  };
 
   return (
     userInfo && (
@@ -96,7 +92,9 @@ const MyProfilePage = () => {
                 <Button as={Link} to="/user/edit" variant="outline-light">
                   Edit
                 </Button>
-                <Button variant="light" onClick={deleteHandler}>Delete</Button>
+                <Button variant="light" onClick={deleteHandler}>
+                  Delete
+                </Button>
               </Card.Body>
             </Card>
           </Col>

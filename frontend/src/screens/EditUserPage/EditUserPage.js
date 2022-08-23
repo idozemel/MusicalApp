@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUser, login, logout, userEdit} from '../../actions/userAction';
+import { login, userEdit } from "../../actions/userAction";
 import ErrorMessage from "../../components/Handlers/ErrorMessage";
 import Loading from "../../components/Handlers/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
@@ -14,28 +14,24 @@ const EditUserPage = () => {
 
   const dispatch = useDispatch();
 
-
   const userGetter = useSelector((state) => state.getUser);
   const { loading, error, userInfo } = userGetter;
 
-  const updateUser = useSelector((state)=> state.editUser)
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(userInfo){
+    if (userInfo) {
       setName(userInfo.name);
       setAge(userInfo.age);
       setGender(userInfo.gender);
     }
-  },[userInfo])
+  }, [userInfo]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    dispatch(userEdit(userInfo._id,password,name,gender,age));
-    dispatch(login(userInfo.username,password));
-    window.alert("Profile has been updated");
-
-    navigate('/myprofile');
+    dispatch(userEdit(userInfo._id, password, name, gender, age));
+    dispatch(login(userInfo.username, password));
+    navigate("/myprofile");
   };
 
   return (
@@ -57,7 +53,7 @@ const EditUserPage = () => {
               disabled
               placeholder="Enter Name"
             />
-          </Form.Group> 
+          </Form.Group>
 
           <Form.Group className="mb-3" controlId="formEmail">
             <Form.Label>Email address</Form.Label>
@@ -105,8 +101,20 @@ const EditUserPage = () => {
 
           <Form.Label>Choose Gender</Form.Label>
           <InputGroup className="mb-3">
-            <Button variant="outline-secondary" value={gender} onClick={e => setGender(e.target.childNodes[0].data)}>Male</Button>
-            <Button variant="outline-secondary" value={gender} onClick={e => setGender(e.target.childNodes[0].data)}>Female</Button>
+            <Button
+              variant="outline-secondary"
+              value={gender}
+              onClick={(e) => setGender(e.target.childNodes[0].data)}
+            >
+              Male
+            </Button>
+            <Button
+              variant="outline-secondary"
+              value={gender}
+              onClick={(e) => setGender(e.target.childNodes[0].data)}
+            >
+              Female
+            </Button>
           </InputGroup>
 
           <Button variant="primary" size="lg" type="submit">

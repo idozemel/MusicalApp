@@ -9,6 +9,7 @@ import { deleteUser } from "../../services/userService";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { getFilterUsers } from "../../actions/adminAction";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
   const dispatch = useDispatch();
@@ -48,6 +49,9 @@ const AdminPage = () => {
 
   return (
     <MainScreen title="Hello Admin">
+      <Button>
+        <Link to={"/dashboard"}> Dashboard</Link>
+      </Button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
@@ -72,54 +76,61 @@ const AdminPage = () => {
       {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
       {loading && <Loading />}
       {filterUsers && userInfo && (
-        <Form
-          className="d-flex justify-content-around align-items-center "
-          onSubmit={searchHandler}
-        >
-          <Form.Group className="w-25">
-            <Form.Label>
-              Age {filters.age[0]} - {filters.age[1]}
-            </Form.Label>
-            <Slider
-              draggableTrack
-              range
-              min={14}
-              max={80}
-              defaultValue={filters.age}
-              value={filters.age}
-              onChange={(age) => setFilters((filters) => ({ ...filters, age }))}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Search</Form.Label>
-            <Form.Control
-              placeholder="Search"
-              value={filters.text}
-              onChange={(ev) =>
-                setFilters((filters) => ({ ...filters, text: ev.target.value }))
-              }
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Gender</Form.Label>
-            <Form.Select
-              value={filters.gender}
-              onChange={(ev) =>
-                setFilters((filters) => ({
-                  ...filters,
-                  gender: ev.target.value || "",
-                }))
-              }
-            >
-              <option value="">All</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </Form.Select>
-          </Form.Group>
-          <Button className="mt-4" variant="primary" size="lg" type="submit">
-            Submit
-          </Button>
-        </Form>
+        <>
+          <Form
+            className="d-flex justify-content-around align-items-center "
+            onSubmit={searchHandler}
+          >
+            <Form.Group className="w-25">
+              <Form.Label>
+                Age {filters.age[0]} - {filters.age[1]}
+              </Form.Label>
+              <Slider
+                draggableTrack
+                range
+                min={14}
+                max={80}
+                defaultValue={filters.age}
+                value={filters.age}
+                onChange={(age) =>
+                  setFilters((filters) => ({ ...filters, age }))
+                }
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Search</Form.Label>
+              <Form.Control
+                placeholder="Search"
+                value={filters.text}
+                onChange={(ev) =>
+                  setFilters((filters) => ({
+                    ...filters,
+                    text: ev.target.value,
+                  }))
+                }
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Gender</Form.Label>
+              <Form.Select
+                value={filters.gender}
+                onChange={(ev) =>
+                  setFilters((filters) => ({
+                    ...filters,
+                    gender: ev.target.value || "",
+                  }))
+                }
+              >
+                <option value="">All</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </Form.Select>
+            </Form.Group>
+            <Button className="mt-4" variant="primary" size="lg" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </>
       )}
       {filterUsers &&
         userInfo &&

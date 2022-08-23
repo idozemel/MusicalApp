@@ -18,6 +18,8 @@ export const getFilterUsers = (filters) => async (dispatch) => {
     });
     dispatch({ type: FILTER_USERS_SUCCESS, payload: data });
   } catch (error) {
+    window.location.assign("/");
+
     dispatch({
       type: FILTER_USERS_FAIL,
       payload:
