@@ -53,7 +53,6 @@ const SongCreateEdit = () => {
 
   const deleteHandler = () => {
     dispatch(songDelete(song._id));
-    dispatch(getAllSong());
     navigate("/songs");
   };
   return (
@@ -68,7 +67,6 @@ const SongCreateEdit = () => {
             else songToSend = { ...song };
             saveSong(id, songToSend).then(() => {
               navigate("/songs");
-              dispatch(getAllSong());
             });
           }}
         >
