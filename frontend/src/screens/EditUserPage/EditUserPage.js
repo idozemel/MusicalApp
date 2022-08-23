@@ -15,8 +15,11 @@ const EditUserPage = () => {
   const dispatch = useDispatch();
 
   const userGetter = useSelector((state) => state.getUser);
-  const { loading, error, userInfo } = userGetter;
+  const { loading, userInfo } = userGetter;
 
+
+  const userEditter = useSelector((state) => state.editUser)
+  const {error:editError} = userEditter;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,9 +40,9 @@ const EditUserPage = () => {
   return (
     <MainScreen title="EDIT">
       <div className="EditContainer">
-        {error && (
+        {(editError === "Wrong password") && (
           <ErrorMessage variant="danger" className="inputs">
-            {error}
+            Wrong password
           </ErrorMessage>
         )}
         {loading && <Loading />}

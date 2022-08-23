@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Container, Form, Nav, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../actions/userAction";
-import { isHeAdmin } from "../../services/userService";
 
 const Header = () => {
   const dispatch = useDispatch();

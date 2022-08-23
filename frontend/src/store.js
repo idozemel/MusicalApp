@@ -2,7 +2,7 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import { userLoginReducer, userRegisterReducer, getUserReducer, getAllUsersReducer, usersEditReducer, userDeleteReducer } from './reducers/userReducer'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { allSongsReducer } from './reducers/songReducer';
+import { allSongsReducer, songDeleteReducer } from './reducers/songReducer';
 import { getFilterUsersReducer } from './reducers/adminReducer';
 const reducer = combineReducers({
     userLogin: userLoginReducer,
@@ -13,6 +13,7 @@ const reducer = combineReducers({
     getFilterUsers: getFilterUsersReducer,
     editUser: usersEditReducer,
     deleteUser: userDeleteReducer,
+    deleteSong: songDeleteReducer,
 });
 
 const initialState = {};
