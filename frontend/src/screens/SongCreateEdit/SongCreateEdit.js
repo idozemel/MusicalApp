@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getAllSong, songDelete } from "../../actions/songAction";
+import { songDelete } from "../../actions/songAction";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import { getGenres, getSongById, saveSong } from "../../services/songService";
 

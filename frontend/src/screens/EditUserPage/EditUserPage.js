@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUser, login, userEdit } from "../../actions/userAction";
+import { getUser, userEdit } from "../../actions/userAction";
 import ErrorMessage from "../../components/Handlers/ErrorMessage";
 import Loading from "../../components/Handlers/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
@@ -18,7 +18,6 @@ const EditUserPage = () => {
   const userGetter = useSelector((state) => state.getUser);
   const { error, loading, userInfo } = userGetter;
 
-  const userEditter = useSelector((state) => state.editUser);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,13 +26,12 @@ const EditUserPage = () => {
       setAge(userInfo.age);
       setGender(userInfo.gender);
     } else dispatch(getUser());
-  }, [userInfo]);
+  }, [userInfo,dispatch]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     checkPassword(userInfo.username, password)
       .then((res) => {
-        console.log(res);
         if (res) {
           dispatch(userEdit(userInfo._id, password, name, gender, age));
           navigate("/myprofile");

@@ -31,11 +31,17 @@ const SongsPage = () => {
     const initFetch = async () => {
       const genres = await getGenres();
       const genreNames = genres.map((g) => g.name);
-      dispatch(getAllSong({ ...filters, genres: genreNames }));
+      dispatch(
+        getAllSong({
+          artistText: "",
+          songText: "",
+          genres: genreNames,
+        })
+      );
       setGenres(genreNames);
     };
     initFetch();
-  }, []);
+  }, [dispatch]);
 
   return (
     <MainScreen title="Songs">
