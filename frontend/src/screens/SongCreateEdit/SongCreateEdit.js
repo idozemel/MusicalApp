@@ -14,6 +14,7 @@ const SongCreateEdit = () => {
     link: "",
     image: "",
   });
+  const [validated, setValidated] = useState(false);
 
   let { id } = useParams();
   const navigate = useNavigate();
@@ -59,26 +60,39 @@ const SongCreateEdit = () => {
     song && (
       <MainScreen title="Song">
         <Form
+          noValidate
+          validated={validated}
           onSubmit={(ev) => {
-            let songToSend;
+            const form = ev.currentTarget;
             ev.preventDefault();
-            if (!song?.genre?.name)
-              songToSend = { ...song, genre: { name: "Pop" } };
-            else songToSend = { ...song };
-            saveSong(id, songToSend).then(() => {
-              navigate("/songs");
-            });
+            if (form.checkValidity() === true) {
+              setValidated(false);
+              let songToSend;
+              ev.preventDefault();
+              if (!song?.genre?.name)
+                songToSend = { ...song, genre: { name: "Pop" } };
+              else songToSend = { ...song };
+              saveSong(id, songToSend).then(() => {
+                navigate("/songs");
+              });
+            } else {
+              setValidated(true);
+            }
           }}
         >
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Name </Form.Label>
             <Form.Control
+              required
               placeholder="Enter name"
               name="name"
               value={song.name}
               onChange={onChangeHandlerSong}
             />
           </Form.Group>
+          <Form.Control.Feedback type="invalid">
+            Please provide song name.
+          </Form.Control.Feedback>
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Link</Form.Label>
             <Form.Control
@@ -124,11 +138,15 @@ const SongCreateEdit = () => {
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Artist name</Form.Label>
             <Form.Control
+              required
               placeholder="Artist name"
               name="name"
               value={song.artist.name}
               onChange={onChangeHandlerArtist}
             />
+            <Form.Control.Feedback type="invalid">
+              Please provide artist name.
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Artist Link</Form.Label>
