@@ -2,56 +2,83 @@ import React, { Component } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import axios from "axios";
-import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
-import { Bar } from "react-chartjs-2";
-
+import "./Dashborad.css";
 import { useState, useEffect } from "react";
+import { configWithToken } from "../../actions/configWithToken";
+import Loading from "../../components/Handlers/Loading";
+import { Container } from "react-bootstrap";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const DashboardPage = () => {
-  const [songs, setsongs] = useState([]);
-  const [label, setLabel] = useState([]);
+  const [data, setData] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "# of Votes",
+        data: [],
+        backgroundColor: [
+          "rgba(255, 99, 132)",
+          "rgba(54, 162, 235)",
+          "rgba(255, 206, 86)",
+          "rgba(75, 192, 192)",
+          "rgba(153, 102, 255)",
+          "rgba(255, 159, 64)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132)",
+          "rgba(54, 162, 235)",
+          "rgba(255, 206, 86)",
+          "rgba(75, 192, 192)",
+          "rgba(153, 102, 255)",
+          "rgba(255, 159, 64)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  });
   useEffect(() => {
     axios
-      .get("http://localhost:3030/api/genre/songscount")
+      .get(
+        "http://localhost:3030/api/genre/songscount",
+        configWithToken(localStorage.getItem("userInfo"))
+      )
       .then(({ data }) => {
-        data?.map((song) => {
-          setLabel((labels) => [...labels, song._id]);
-          setsongs((songs) => [...songs, song.songs]);
+        data?.map((genre) => {
+          setData((data) => ({
+            ...data,
+            labels: [...data.labels, genre._id],
+            datasets: [
+              {
+                ...data.datasets[0],
+                data: [...data.datasets[0].data, genre.songs],
+              },
+            ],
+          }));
         });
       })
       .catch((error) => console.log(error));
   }, []);
-  return (
+  return data && data?.datasets[0]?.data?.length > 0 ? (
     <Doughnut
-      data={{
-        labels: label,
-        datasets: [
-          {
-            label: "# of Votes",
-            data: songs,
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)",
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)",
-            ],
-            borderWidth: 1,
+      data={data}
+      options={{
+        plugins: {
+        
+          legend: {
+            position: "top",
+
+            labels: {
+              font: {
+                size: 24,
+              },
+            },
           },
-        ],
+        },
       }}
     />
+  ) : (
+    <Loading />
   );
 };
 
