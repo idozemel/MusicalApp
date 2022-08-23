@@ -1,13 +1,18 @@
-import React from "react";
-import { Container, Form, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { Container, Form, Nav, Navbar } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../actions/userAction";
+import { isHeAdmin } from "../../services/userService";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = localStorage.getItem("userInfo");
+
+  const user = useSelector((state) => state.getUser);
+  const { userInfo:isAdmin } = user;
+
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -25,6 +30,13 @@ const Header = () => {
           <Nav className="m-auto">
             <Form inline="true"></Form>
           </Nav>
+          {isAdmin?.isAdmin && (
+            <Nav>
+              <Nav.Link as={Link} to="/admin">
+                Admin Page
+              </Nav.Link>
+            </Nav>
+          )}
           {userInfo && (
             <Nav>
               <Nav.Link as={Link} to="/myProfile">
